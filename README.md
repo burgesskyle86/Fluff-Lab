@@ -1,23 +1,22 @@
-# Fluff Lab v1
+# Fluff Lab v1.2
 
-A simple GitHub Pages recipe/macro builder.
+## What changed from v1.0
 
-## Files
+- Removed calorie and protein fields from each ingredient card.
+- Ingredients now show only name and amount.
+- Total calories and protein are shown at the top.
+- Split app into separate project files like Atlas:
+  - index.html
+  - styles.css
+  - recipes.js
+  - script.js
+  - data/
+  - assets/
 
-- index.html
+## Upload to GitHub Pages
 
-## How to use
+Upload these files to your Fluff Lab repository.
 
-1. Upload the contents of this folder to a GitHub repository.
-2. Make sure the main file is named `index.html`.
-3. Turn on GitHub Pages.
-4. Open the site on your phone.
+The main file must stay named:
 
-## Current features
-
-- Flavor dropdown
-- Base fluff recipes
-- Editable calories and protein
-- Add custom mix-ins
-- Recipe snapshot
-- Save flavors during the current session
+index.html
