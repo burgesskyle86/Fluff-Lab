@@ -341,3 +341,41 @@ summary {
   font-weight: 800;
   color: var(--text);
 }
+
+/* v2.0 true home screen */
+.home-card h2 {
+  margin-bottom: 14px;
+}
+
+.home-actions {
+  display: grid;
+  gap: 12px;
+}
+
+.home-action {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  background: var(--card-soft);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 16px 18px;
+  font-size: 1.05rem;
+}
+
+.home-action.primary {
+  background: var(--accent);
+  color: #00111a;
+  border-color: var(--accent);
+}
+
+.back-home {
+  margin-bottom: 12px;
+}
+
+.hero {
+  position: static;
+}

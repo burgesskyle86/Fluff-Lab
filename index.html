@@ -16,15 +16,23 @@
       <span class="version">v2.0</span>
     </header>
 
-    <nav class="tabs" aria-label="Fluff Labs navigation">
-      <button type="button" class="tab active" data-tab="builder">Formula</button>
-      <button type="button" class="tab" data-tab="protocols">Protocols</button>
-      <button type="button" class="tab" data-tab="inventory">Inventory</button>
-      <button type="button" class="tab" data-tab="experiments">Experiment Log</button>
-      <button type="button" class="tab" data-tab="manual">Lab Manual</button>
-    </nav>
+    <section id="home" class="tab-panel active">
+      <section class="card home-card">
+        <h2>Home</h2>
+        <div class="home-actions">
+          <button type="button" class="home-action primary" data-go="builder">▶ New Formula</button>
+          <button type="button" class="home-action" data-go="protocols">📚 Protocols <span id="protocolCount">(0)</span></button>
+          <button type="button" class="home-action" data-go="protocols" data-filter="favorites">⭐ Favorites <span id="favoriteCount">(0)</span></button>
+          <button type="button" class="home-action" data-go="inventory">📦 Inventory</button>
+          <button type="button" class="home-action" data-go="experiments">🔬 Experiment Log</button>
+          <button type="button" class="home-action" data-go="manual">📖 Lab Manual</button>
+        </div>
+      </section>
+    </section>
 
-    <section id="builder" class="tab-panel active">
+    <section id="builder" class="tab-panel">
+      <button type="button" class="ghost back-home" data-go="home">← Home</button>
+
       <section class="card hero">
         <label for="flavorSelect">Formula</label>
         <select id="flavorSelect"></select>
@@ -79,9 +87,10 @@
     </section>
 
     <section id="protocols" class="tab-panel">
+      <button type="button" class="ghost back-home" data-go="home">← Home</button>
       <section class="card">
         <div class="section-head">
-          <h2>Protocols</h2>
+          <h2 id="protocolsTitle">Protocols</h2>
           <button type="button" id="clearProtocolsBtn" class="danger">Clear Protocols</button>
         </div>
         <div id="protocolList" class="empty">No protocols saved yet.</div>
@@ -89,6 +98,7 @@
     </section>
 
     <section id="inventory" class="tab-panel">
+      <button type="button" class="ghost back-home" data-go="home">← Home</button>
       <section class="card">
         <h2>Inventory</h2>
         <p class="muted">Check what you currently have on hand. Future versions can use this to show what formulas you can build today.</p>
@@ -97,6 +107,7 @@
     </section>
 
     <section id="experiments" class="tab-panel">
+      <button type="button" class="ghost back-home" data-go="home">← Home</button>
       <section class="card">
         <div class="section-head">
           <h2>Experiment Log</h2>
@@ -107,10 +118,11 @@
     </section>
 
     <section id="manual" class="tab-panel">
+      <button type="button" class="ghost back-home" data-go="home">← Home</button>
       <section class="card manual-card">
         <h2>Lab Manual</h2>
         <h3>Getting Started</h3>
-        <p>Choose a formula, review the base formula, add additives if desired, then Mix.</p>
+        <p>Start from Home, tap New Formula, choose a formula, review the base formula, add additives if desired, then Mix.</p>
 
         <h3>Formula</h3>
         <p>A formula is the working version of a protein dessert. It can be changed, tested, and improved.</p>
@@ -125,7 +137,7 @@
         <p>The conclusion is the final lesson from the experiment. Write what you would repeat next time.</p>
 
         <h3>Protocols</h3>
-        <p>A protocol is a saved formula that you want to make again.</p>
+        <p>A protocol is a saved formula that you want to make again. Star a protocol to mark it as a favorite.</p>
       </section>
     </section>
   </main>

@@ -30,7 +30,7 @@ function clone(items) {
 
 function start() {
   loadSavedData();
-  setupTabs();
+  setupNavigation();
 
   Object.keys(RECIPES).forEach(formula => {
     const option = document.createElement("option");
@@ -53,19 +53,30 @@ function start() {
   renderProtocols();
   renderExperimentLog();
   renderInventory();
+  updateHomeCounts();
 }
 
-function setupTabs() {
-  document.querySelectorAll(".tab").forEach(tab => {
-    tab.addEventListener("click", () => {
-      const target = tab.dataset.tab;
-      document.querySelectorAll(".tab").forEach(item => item.classList.remove("active"));
-      document.querySelectorAll(".tab-panel").forEach(panel => panel.classList.remove("active"));
-      tab.classList.add("active");
-      document.getElementById(target).classList.add("active");
+function setupNavigation() {
+  document.querySelectorAll("[data-go]").forEach(button => {
+    button.addEventListener("click", () => {
+      const target = button.dataset.go;
+      if (button.dataset.filter === "favorites") {
+        renderProtocols(true);
+      } else if (target === "protocols") {
+        renderProtocols(false);
+      }
+      switchTab(target);
     });
   });
 }
+
+function updateHomeCounts() {
+  const protocolCount = document.getElementById("protocolCount");
+  const favoriteCount = document.getElementById("favoriteCount");
+  if (protocolCount) protocolCount.textContent = `(${protocols.length})`;
+  if (favoriteCount) favoriteCount.textContent = `(${protocols.filter(protocol => protocol.favorite).length})`;
+}
+
 
 function loadSavedData() {
   protocols = readJson(STORAGE_KEYS.protocols, []);
@@ -79,6 +90,7 @@ function saveData() {
   localStorage.setItem(STORAGE_KEYS.experiments, JSON.stringify(experimentLog));
   localStorage.setItem(STORAGE_KEYS.inventory, JSON.stringify(inventory));
   localStorage.setItem(STORAGE_KEYS.experimentNumber, String(experimentNumber));
+  updateHomeCounts();
 }
 
 function readJson(key, fallback) {
@@ -198,7 +210,8 @@ function saveProtocol() {
     observations: observationText.value.trim(),
     conclusion: conclusionText.value.trim(),
     ingredients: all.map(item => `${item.name} — ${item.amount}`),
-    createdAt: new Date().toLocaleString()
+    createdAt: new Date().toLocaleString(),
+    favorite: false
   });
 
   logExperiment(`Saved protocol: ${flavorSelect.value}`);
@@ -208,21 +221,27 @@ function saveProtocol() {
   switchTab("protocols");
 }
 
-function renderProtocols() {
-  if (!protocols.length) {
+function renderProtocols(onlyFavorites = false) {
+  const visibleProtocols = onlyFavorites ? protocols.filter(protocol => protocol.favorite) : protocols;
+  const title = document.getElementById("protocolsTitle");
+  if (title) title.textContent = onlyFavorites ? "Favorite Protocols" : "Protocols";
+
+  if (!visibleProtocols.length) {
     protocolList.className = "empty";
-    protocolList.textContent = "No protocols saved yet.";
+    protocolList.textContent = onlyFavorites ? "No favorite protocols yet." : "No protocols saved yet.";
+    updateHomeCounts();
     return;
   }
 
   protocolList.className = "";
   protocolList.innerHTML = "";
 
-  protocols.forEach((protocol, index) => {
+  visibleProtocols.forEach(protocol => {
+    const index = protocols.indexOf(protocol);
     const div = document.createElement("div");
     div.className = "saved";
     div.innerHTML = `
-      <strong>${escapeHtml(protocol.formula)}</strong>
+      <strong>${protocol.favorite ? "⭐ " : ""}${escapeHtml(protocol.formula)}</strong>
       <div>${protocol.calories} calories · ${protocol.protein}g protein</div>
       <div class="muted">${escapeHtml(protocol.createdAt || "")}</div>
       ${protocol.observations ? `<p><b>Observations:</b> ${escapeHtml(protocol.observations)}</p>` : ""}
@@ -233,17 +252,40 @@ function renderProtocols() {
       </details>
     `;
 
+    const row = document.createElement("div");
+    row.className = "button-row";
+
+    const favoriteBtn = document.createElement("button");
+    favoriteBtn.type = "button";
+    favoriteBtn.className = "ghost";
+    favoriteBtn.textContent = protocol.favorite ? "Unfavorite" : "Favorite";
+    favoriteBtn.addEventListener("click", () => toggleFavorite(index, onlyFavorites));
+
     const cloneBtn = document.createElement("button");
     cloneBtn.type = "button";
     cloneBtn.className = "ghost";
-    cloneBtn.style.marginTop = "10px";
     cloneBtn.textContent = "Clone Formula";
     cloneBtn.addEventListener("click", () => cloneProtocol(index));
-    div.appendChild(cloneBtn);
 
+    row.appendChild(favoriteBtn);
+    row.appendChild(cloneBtn);
+    div.appendChild(row);
     protocolList.appendChild(div);
   });
+
+  updateHomeCounts();
 }
+
+function toggleFavorite(index, onlyFavorites = false) {
+  const protocol = protocols[index];
+  if (!protocol) return;
+  protocol.favorite = !protocol.favorite;
+  logExperiment(`${protocol.favorite ? "Favorited" : "Unfavorited"} protocol: ${protocol.formula}`);
+  saveData();
+  renderProtocols(onlyFavorites);
+  updateHomeCounts();
+}
+
 
 function cloneProtocol(index) {
   const protocol = protocols[index];
@@ -336,9 +378,14 @@ function renderInventory() {
 }
 
 function switchTab(target) {
-  const tab = document.querySelector(`.tab[data-tab="${target}"]`);
-  if (tab) tab.click();
+  document.querySelectorAll(".tab-panel").forEach(panel => panel.classList.remove("active"));
+  const panel = document.getElementById(target);
+  if (panel) {
+    panel.classList.add("active");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 }
+
 
 function escapeHtml(value) {
   return String(value)
