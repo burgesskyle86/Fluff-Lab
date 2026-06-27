@@ -1,81 +1,107 @@
 let currentBase = [];
-let currentMixins = [];
-let savedRecipes = JSON.parse(localStorage.getItem("fluffLabExperiments") || "[]");
-let labNotes = JSON.parse(localStorage.getItem("fluffLabNotes") || "[]");
-let pantry = JSON.parse(localStorage.getItem("fluffLabPantry") || "{}");
+let currentAdditives = [];
+let protocols = [];
+let experimentLog = [];
+let inventory = {};
+let experimentNumber = 1;
+
+const STORAGE_KEYS = {
+  protocols: "fluffLabsV2Protocols",
+  experiments: "fluffLabsV2ExperimentLog",
+  inventory: "fluffLabsV2Inventory",
+  experimentNumber: "fluffLabsV2ExperimentNumber"
+};
 
 const flavorSelect = document.getElementById("flavorSelect");
-const noteFlavor = document.getElementById("noteFlavor");
 const baseList = document.getElementById("baseList");
-const mixInList = document.getElementById("mixInList");
+const additiveList = document.getElementById("additiveList");
 const caloriesTotal = document.getElementById("caloriesTotal");
 const proteinTotal = document.getElementById("proteinTotal");
-const recipeNotes = document.getElementById("recipeNotes");
-const savedList = document.getElementById("savedList");
-const notesList = document.getElementById("notesList");
-const noteText = document.getElementById("noteText");
-const pantryList = document.getElementById("pantryList");
-const availableList = document.getElementById("availableList");
+const hypothesisText = document.getElementById("hypothesisText");
+const observationText = document.getElementById("observationText");
+const conclusionText = document.getElementById("conclusionText");
+const protocolList = document.getElementById("protocolList");
+const experimentList = document.getElementById("experimentList");
+const inventoryList = document.getElementById("inventoryList");
 
 function clone(items) {
   return items.map(item => ({ ...item }));
 }
 
 function start() {
-  Object.keys(RECIPES).forEach(flavor => {
-    flavorSelect.appendChild(makeOption(flavor));
-    noteFlavor.appendChild(makeOption(flavor));
+  loadSavedData();
+  setupTabs();
+
+  Object.keys(RECIPES).forEach(formula => {
+    const option = document.createElement("option");
+    option.value = formula;
+    option.textContent = formula;
+    flavorSelect.appendChild(option);
   });
 
   flavorSelect.value = "Key Lime Pie";
-  noteFlavor.value = "Key Lime Pie";
-  loadFlavor("Key Lime Pie");
+  loadFormula("Key Lime Pie", false);
 
+  flavorSelect.addEventListener("change", () => loadFormula(flavorSelect.value));
+  document.getElementById("resetBtn").addEventListener("click", () => loadFormula(flavorSelect.value));
+  document.getElementById("addAdditiveBtn").addEventListener("click", addAdditive);
+  document.getElementById("mixBtn").addEventListener("click", mixFormula);
+  document.getElementById("saveProtocolBtn").addEventListener("click", saveProtocol);
+  document.getElementById("clearProtocolsBtn").addEventListener("click", clearProtocols);
+  document.getElementById("clearLogBtn").addEventListener("click", clearExperimentLog);
+
+  renderProtocols();
+  renderExperimentLog();
+  renderInventory();
+}
+
+function setupTabs() {
   document.querySelectorAll(".tab").forEach(tab => {
-    tab.addEventListener("click", () => showTab(tab.dataset.tab));
-  });
-
-  flavorSelect.addEventListener("change", () => loadFlavor(flavorSelect.value));
-  document.getElementById("resetBtn").addEventListener("click", () => loadFlavor(flavorSelect.value));
-  document.getElementById("addMixInBtn").addEventListener("click", addMixIn);
-  document.getElementById("saveBtn").addEventListener("click", saveRecipe);
-  document.getElementById("clearSavedBtn").addEventListener("click", clearSaved);
-  document.getElementById("saveNoteBtn").addEventListener("click", saveNote);
-  document.getElementById("clearNotesBtn").addEventListener("click", clearNotes);
-  document.getElementById("clearPantryBtn").addEventListener("click", clearPantry);
-
-  renderPantry();
-  renderSaved();
-  renderNotes();
-}
-
-function makeOption(value) {
-  const option = document.createElement("option");
-  option.value = value;
-  option.textContent = value;
-  return option;
-}
-
-function showTab(tabName) {
-  document.querySelectorAll(".tab").forEach(tab => {
-    tab.classList.toggle("active", tab.dataset.tab === tabName);
-  });
-
-  document.querySelectorAll(".tab-panel").forEach(panel => {
-    panel.classList.toggle("active", panel.id === tabName);
+    tab.addEventListener("click", () => {
+      const target = tab.dataset.tab;
+      document.querySelectorAll(".tab").forEach(item => item.classList.remove("active"));
+      document.querySelectorAll(".tab-panel").forEach(panel => panel.classList.remove("active"));
+      tab.classList.add("active");
+      document.getElementById(target).classList.add("active");
+    });
   });
 }
 
-function loadFlavor(flavor) {
-  currentBase = clone(RECIPES[flavor].base);
-  currentMixins = clone(RECIPES[flavor].mixins);
-  recipeNotes.value = "";
+function loadSavedData() {
+  protocols = readJson(STORAGE_KEYS.protocols, []);
+  experimentLog = readJson(STORAGE_KEYS.experiments, []);
+  inventory = readJson(STORAGE_KEYS.inventory, {});
+  experimentNumber = Number(localStorage.getItem(STORAGE_KEYS.experimentNumber) || 1);
+}
+
+function saveData() {
+  localStorage.setItem(STORAGE_KEYS.protocols, JSON.stringify(protocols));
+  localStorage.setItem(STORAGE_KEYS.experiments, JSON.stringify(experimentLog));
+  localStorage.setItem(STORAGE_KEYS.inventory, JSON.stringify(inventory));
+  localStorage.setItem(STORAGE_KEYS.experimentNumber, String(experimentNumber));
+}
+
+function readJson(key, fallback) {
+  try {
+    return JSON.parse(localStorage.getItem(key)) || fallback;
+  } catch (error) {
+    return fallback;
+  }
+}
+
+function loadFormula(formula, shouldLog = true) {
+  currentBase = clone(RECIPES[formula].base);
+  currentAdditives = clone(RECIPES[formula].mixins || []);
+  hypothesisText.value = "";
+  observationText.value = "";
+  conclusionText.value = "";
   renderAll();
+  if (shouldLog) logExperiment(`Loaded formula: ${formula}`);
 }
 
 function renderAll() {
   renderList(baseList, currentBase, "base");
-  renderList(mixInList, currentMixins, "mixins");
+  renderList(additiveList, currentAdditives, "additives");
   updateTotals();
 }
 
@@ -83,7 +109,7 @@ function renderList(container, items, type) {
   container.innerHTML = "";
 
   if (!items.length) {
-    container.innerHTML = `<div class="empty">No mix-ins yet.</div>`;
+    container.innerHTML = `<div class="empty">No additives yet.</div>`;
     return;
   }
 
@@ -99,13 +125,15 @@ function renderList(container, items, type) {
       </div>
     `;
 
-    if (type === "mixins") {
+    if (type === "additives") {
       const remove = document.createElement("button");
       remove.type = "button";
-      remove.className = "ghost mini-button";
+      remove.className = "ghost";
+      remove.style.marginTop = "10px";
       remove.textContent = "Remove";
       remove.addEventListener("click", () => {
-        currentMixins.splice(index, 1);
+        const removed = currentAdditives.splice(index, 1)[0];
+        logExperiment(`Removed additive: ${removed.name}`);
         renderAll();
       });
       row.appendChild(remove);
@@ -116,203 +144,200 @@ function renderList(container, items, type) {
 }
 
 function updateTotals() {
-  const { calories, protein } = calculateTotals([...currentBase, ...currentMixins]);
-  caloriesTotal.textContent = calories;
-  proteinTotal.textContent = `${protein}g`;
+  const totals = getTotals();
+  caloriesTotal.textContent = totals.calories;
+  proteinTotal.textContent = `${totals.protein}g`;
 }
 
-function calculateTotals(items) {
-  return {
-    calories: Math.round(items.reduce((sum, item) => sum + Number(item.calories || 0), 0)),
-    protein: Math.round(items.reduce((sum, item) => sum + Number(item.protein || 0), 0))
-  };
+function getTotals() {
+  const all = [...currentBase, ...currentAdditives];
+  const calories = all.reduce((sum, item) => sum + Number(item.calories || 0), 0);
+  const protein = all.reduce((sum, item) => sum + Number(item.protein || 0), 0);
+  return { calories: Math.round(calories), protein: Math.round(protein) };
 }
 
-function addMixIn() {
-  const name = prompt("Mix-in name?");
+function addAdditive() {
+  const name = prompt("Additive name?");
   if (!name) return;
 
   const amount = prompt("Amount? Example: 50 g, 1 tbsp, 1 cookie") || "custom";
   const calories = Number(prompt("Calories?") || 0);
   const protein = Number(prompt("Protein grams?") || 0);
 
-  currentMixins.push({ name, amount, calories, protein });
+  currentAdditives.push({ name, amount, calories, protein });
+  logExperiment(`Added additive: ${name} — ${amount}`);
   renderAll();
+  renderInventory();
 }
 
-function saveRecipe() {
-  const all = [...currentBase, ...currentMixins];
-  const totals = calculateTotals(all);
+function mixFormula() {
+  const totals = getTotals();
+  const hypothesis = hypothesisText.value.trim();
+  const observation = observationText.value.trim();
+  const conclusion = conclusionText.value.trim();
 
-  savedRecipes.unshift({
-    id: Date.now(),
-    number: savedRecipes.length + 1,
-    date: new Date().toLocaleDateString(),
-    flavor: flavorSelect.value,
+  let details = `Mixed formula: ${flavorSelect.value}. Result: ${totals.calories} calories, ${totals.protein}g protein.`;
+  if (hypothesis) details += ` Hypothesis: ${hypothesis}`;
+  if (observation) details += ` Observation: ${observation}`;
+  if (conclusion) details += ` Conclusion: ${conclusion}`;
+
+  logExperiment(details);
+  renderExperimentLog();
+  switchTab("experiments");
+}
+
+function saveProtocol() {
+  const totals = getTotals();
+  const all = [...currentBase, ...currentAdditives];
+
+  protocols.unshift({
+    formula: flavorSelect.value,
     calories: totals.calories,
     protein: totals.protein,
-    notes: recipeNotes.value.trim(),
-    ingredients: all.map(item => `${item.name} — ${item.amount} — C:${Math.round(Number(item.calories || 0))} P:${Math.round(Number(item.protein || 0))}g`)
+    hypothesis: hypothesisText.value.trim(),
+    observations: observationText.value.trim(),
+    conclusion: conclusionText.value.trim(),
+    ingredients: all.map(item => `${item.name} — ${item.amount}`),
+    createdAt: new Date().toLocaleString()
   });
 
-  saveExperiments();
-  renderSaved();
-  showTab("experiments");
+  logExperiment(`Saved protocol: ${flavorSelect.value}`);
+  saveData();
+  renderProtocols();
+  renderExperimentLog();
+  switchTab("protocols");
 }
 
-function renderSaved() {
-  if (!savedRecipes.length) {
-    savedList.className = "empty";
-    savedList.textContent = "No experiments yet.";
+function renderProtocols() {
+  if (!protocols.length) {
+    protocolList.className = "empty";
+    protocolList.textContent = "No protocols saved yet.";
     return;
   }
 
-  savedList.className = "";
-  savedList.innerHTML = "";
+  protocolList.className = "";
+  protocolList.innerHTML = "";
 
-  savedRecipes.forEach((recipe, index) => {
+  protocols.forEach((protocol, index) => {
     const div = document.createElement("div");
     div.className = "saved";
     div.innerHTML = `
-      <strong>Experiment #${savedRecipes.length - index}: ${escapeHtml(recipe.flavor)}</strong>
-      <div class="muted">${escapeHtml(recipe.date || "No date saved")}</div>
-      <div>${recipe.calories} calories · ${recipe.protein}g protein</div>
-      ${recipe.notes ? `<div class="note-block">${escapeHtml(recipe.notes)}</div>` : ""}
+      <strong>${escapeHtml(protocol.formula)}</strong>
+      <div>${protocol.calories} calories · ${protocol.protein}g protein</div>
+      <div class="muted">${escapeHtml(protocol.createdAt || "")}</div>
+      ${protocol.observations ? `<p><b>Observations:</b> ${escapeHtml(protocol.observations)}</p>` : ""}
+      ${protocol.conclusion ? `<p><b>Conclusion:</b> ${escapeHtml(protocol.conclusion)}</p>` : ""}
       <details>
-        <summary>Ingredients</summary>
-        <ul>${recipe.ingredients.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+        <summary>Formula ingredients</summary>
+        <ul>${protocol.ingredients.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
       </details>
     `;
-    savedList.appendChild(div);
+
+    const cloneBtn = document.createElement("button");
+    cloneBtn.type = "button";
+    cloneBtn.className = "ghost";
+    cloneBtn.style.marginTop = "10px";
+    cloneBtn.textContent = "Clone Formula";
+    cloneBtn.addEventListener("click", () => cloneProtocol(index));
+    div.appendChild(cloneBtn);
+
+    protocolList.appendChild(div);
   });
 }
 
-function saveExperiments() {
-  localStorage.setItem("fluffLabExperiments", JSON.stringify(savedRecipes));
+function cloneProtocol(index) {
+  const protocol = protocols[index];
+  if (!protocol) return;
+
+  flavorSelect.value = protocol.formula;
+  loadFormula(protocol.formula, false);
+  observationText.value = protocol.observations || "";
+  conclusionText.value = protocol.conclusion || "";
+  logExperiment(`Cloned protocol into formula: ${protocol.formula}`);
+  switchTab("builder");
 }
 
-function clearSaved() {
-  if (!confirm("Clear the experiment log?")) return;
-  savedRecipes = [];
-  saveExperiments();
-  renderSaved();
+function clearProtocols() {
+  if (!confirm("Clear all protocols?")) return;
+  protocols = [];
+  logExperiment("Cleared all protocols.");
+  saveData();
+  renderProtocols();
+  renderExperimentLog();
 }
 
-function saveNote() {
-  const text = noteText.value.trim();
-  if (!text) return;
-
-  labNotes.unshift({
-    id: Date.now(),
-    flavor: noteFlavor.value,
-    text,
-    date: new Date().toLocaleDateString()
+function logExperiment(description) {
+  const totals = getTotals();
+  experimentLog.unshift({
+    number: experimentNumber++,
+    formula: flavorSelect.value || "Formula",
+    description,
+    calories: totals.calories,
+    protein: totals.protein,
+    timestamp: new Date().toLocaleString()
   });
 
-  noteText.value = "";
-  saveNotes();
-  renderNotes();
+  saveData();
+  renderExperimentLog();
 }
 
-function renderNotes() {
-  if (!labNotes.length) {
-    notesList.className = "empty";
-    notesList.textContent = "No lab notes yet.";
+function renderExperimentLog() {
+  if (!experimentLog.length) {
+    experimentList.className = "empty";
+    experimentList.textContent = "No experiments logged yet.";
     return;
   }
 
-  notesList.className = "";
-  notesList.innerHTML = "";
+  experimentList.className = "";
+  experimentList.innerHTML = "";
 
-  labNotes.forEach(note => {
+  experimentLog.forEach(entry => {
     const div = document.createElement("div");
     div.className = "saved";
     div.innerHTML = `
-      <strong>${escapeHtml(note.flavor)}</strong>
-      <div class="muted">${escapeHtml(note.date)}</div>
-      <div class="note-block">${escapeHtml(note.text)}</div>
+      <strong>Experiment #${entry.number}</strong>
+      <div>${escapeHtml(entry.formula)} · ${entry.calories} calories · ${entry.protein}g protein</div>
+      <p>${escapeHtml(entry.description)}</p>
+      <div class="muted">${escapeHtml(entry.timestamp)}</div>
     `;
-    notesList.appendChild(div);
+    experimentList.appendChild(div);
   });
 }
 
-function saveNotes() {
-  localStorage.setItem("fluffLabNotes", JSON.stringify(labNotes));
+function clearExperimentLog() {
+  if (!confirm("Clear the experiment log?")) return;
+  experimentLog = [];
+  experimentNumber = 1;
+  saveData();
+  renderExperimentLog();
 }
 
-function clearNotes() {
-  if (!confirm("Clear all lab notes?")) return;
-  labNotes = [];
-  saveNotes();
-  renderNotes();
-}
+function renderInventory() {
+  const names = new Set();
+  Object.values(RECIPES).forEach(recipe => {
+    [...recipe.base, ...(recipe.mixins || [])].forEach(item => names.add(item.name));
+  });
+  currentAdditives.forEach(item => names.add(item.name));
 
-function renderPantry() {
-  const ingredients = getUniqueIngredients();
-  pantryList.innerHTML = "";
-
-  ingredients.forEach(name => {
-    const id = `pantry-${slugify(name)}`;
+  inventoryList.innerHTML = "";
+  [...names].sort().forEach(name => {
     const label = document.createElement("label");
-    label.className = "check-item";
+    label.className = "inventory-item";
     label.innerHTML = `
-      <input type="checkbox" id="${id}" ${pantry[name] ? "checked" : ""} />
+      <input type="checkbox" ${inventory[name] ? "checked" : ""} />
       <span>${escapeHtml(name)}</span>
     `;
-
     label.querySelector("input").addEventListener("change", event => {
-      pantry[name] = event.target.checked;
-      localStorage.setItem("fluffLabPantry", JSON.stringify(pantry));
-      renderAvailableFormulas();
+      inventory[name] = event.target.checked;
+      saveData();
     });
-
-    pantryList.appendChild(label);
+    inventoryList.appendChild(label);
   });
-
-  renderAvailableFormulas();
 }
 
-function getUniqueIngredients() {
-  const set = new Set();
-  Object.values(RECIPES).forEach(recipe => {
-    [...recipe.base, ...recipe.mixins].forEach(item => set.add(item.name));
-  });
-  return [...set].sort();
-}
-
-function renderAvailableFormulas() {
-  const checked = Object.values(pantry).some(Boolean);
-  if (!checked) {
-    availableList.className = "empty";
-    availableList.textContent = "Check pantry items to see what you can make.";
-    return;
-  }
-
-  const matches = Object.entries(RECIPES).map(([flavor, recipe]) => {
-    const needed = [...recipe.base, ...recipe.mixins].map(item => item.name);
-    const missing = needed.filter(name => !pantry[name]);
-    return { flavor, missing };
-  });
-
-  availableList.className = "";
-  availableList.innerHTML = matches.map(match => `
-    <div class="saved">
-      <strong>${escapeHtml(match.flavor)}</strong>
-      ${match.missing.length === 0
-        ? `<div class="ready">Ready to make</div>`
-        : `<div class="muted">Missing: ${escapeHtml(match.missing.join(", "))}</div>`}
-    </div>
-  `).join("");
-}
-
-function clearPantry() {
-  pantry = {};
-  localStorage.setItem("fluffLabPantry", JSON.stringify(pantry));
-  renderPantry();
-}
-
-function slugify(value) {
-  return String(value).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+function switchTab(target) {
+  const tab = document.querySelector(`.tab[data-tab="${target}"]`);
+  if (tab) tab.click();
 }
 
 function escapeHtml(value) {

@@ -3,25 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fluff Lab v1.5</title>
+  <title>Fluff Labs v2.0</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <main class="app">
     <header class="topbar">
       <div>
-        <h1>Fluff Lab</h1>
-        <p>Protein dessert laboratory</p>
+        <h1>Fluff Labs</h1>
+        <p>Science Never Tasted So Good.</p>
       </div>
-      <span class="version">v1.5</span>
+      <span class="version">v2.0</span>
     </header>
 
-    <nav class="tabs" aria-label="Fluff Lab sections">
-      <button type="button" class="tab active" data-tab="builder">Formula Builder</button>
-      <button type="button" class="tab" data-tab="pantry">Pantry</button>
-      <button type="button" class="tab" data-tab="manual">Lab Manual</button>
-      <button type="button" class="tab" data-tab="notes">Lab Notes</button>
+    <nav class="tabs" aria-label="Fluff Labs navigation">
+      <button type="button" class="tab active" data-tab="builder">Formula</button>
+      <button type="button" class="tab" data-tab="protocols">Protocols</button>
+      <button type="button" class="tab" data-tab="inventory">Inventory</button>
       <button type="button" class="tab" data-tab="experiments">Experiment Log</button>
+      <button type="button" class="tab" data-tab="manual">Lab Manual</button>
     </nav>
 
     <section id="builder" class="tab-panel active">
@@ -50,86 +50,49 @@
 
       <section class="card">
         <div class="section-head">
-          <h2>Mix-ins</h2>
-          <button type="button" id="addMixInBtn" class="ghost">+ Add</button>
+          <h2>Additives</h2>
+          <button type="button" id="addAdditiveBtn" class="ghost">+ Add</button>
         </div>
-        <div id="mixInList" class="ingredient-list"></div>
+        <div id="additiveList" class="ingredient-list"></div>
       </section>
 
       <section class="card">
-        <h2>Formula Notes</h2>
-        <textarea id="recipeNotes" placeholder="Texture, tweaks, next experiment..."></textarea>
+        <h2>Hypothesis</h2>
+        <textarea id="hypothesisText" placeholder="Example: More lime juice will make this formula taste closer to key lime pie."></textarea>
+      </section>
+
+      <section class="card">
+        <h2>Observations</h2>
+        <textarea id="observationText" placeholder="Texture, flavor, tweaks, rating, what to try next..."></textarea>
+      </section>
+
+      <section class="card">
+        <h2>Conclusion</h2>
+        <textarea id="conclusionText" placeholder="Final takeaway: what worked, what did not, and what you would repeat."></textarea>
 
         <div class="button-row">
-          <button type="button" id="saveBtn">Save Experiment</button>
+          <button type="button" id="mixBtn">Mix</button>
+          <button type="button" id="saveProtocolBtn">Save as Protocol</button>
           <button type="button" id="resetBtn" class="danger">Reset Formula</button>
         </div>
       </section>
     </section>
 
-    <section id="pantry" class="tab-panel">
+    <section id="protocols" class="tab-panel">
       <section class="card">
-        <h2>Pantry</h2>
-        <p class="muted">Check off what you have on hand. This keeps the app focused on what you can make right now.</p>
-        <div id="pantryList" class="check-list"></div>
-        <div class="button-row">
-          <button type="button" id="clearPantryBtn" class="ghost">Clear Pantry</button>
+        <div class="section-head">
+          <h2>Protocols</h2>
+          <button type="button" id="clearProtocolsBtn" class="danger">Clear Protocols</button>
         </div>
-      </section>
-
-      <section class="card">
-        <h2>Available Formulas</h2>
-        <div id="availableList" class="empty">Check pantry items to see what you can make.</div>
+        <div id="protocolList" class="empty">No protocols saved yet.</div>
       </section>
     </section>
 
-    <section id="manual" class="tab-panel">
-      <section class="card manual-card">
-        <h2>Lab Manual</h2>
-        <p class="muted">Use Fluff Lab to build, tweak, and improve high-protein dessert formulas.</p>
-
-        <h3>Getting Started</h3>
-        <ol>
-          <li>Pick a formula from the Formula Builder.</li>
-          <li>Review the base formula and mix-ins.</li>
-          <li>Add or remove mix-ins based on what you have.</li>
-          <li>Use the calories and protein totals to decide if the batch fits your goal.</li>
-          <li>Save the experiment after you make it.</li>
-        </ol>
-
-        <h3>How Fluff Lab Works</h3>
-        <p>Each formula starts with a repeatable base, then you can add flavor mix-ins. The app tracks calories and protein only so the screen stays clean.</p>
-
-        <h3>Texture Troubleshooting</h3>
-        <ul>
-          <li>Too thick: add a splash of milk or let frozen fruit thaw slightly.</li>
-          <li>Too thin: chill longer or use a little more pudding mix next time.</li>
-          <li>Grainy: mix longer before adding delicate toppings.</li>
-          <li>Weak flavor: add extract, citrus juice, or a small crunchy topping.</li>
-        </ul>
-
-        <h3>Nutrition</h3>
-        <p>Calories and protein are based on the ingredient numbers saved in the app. Update them once you lock in the exact labels you use.</p>
-      </section>
-    </section>
-
-    <section id="notes" class="tab-panel">
+    <section id="inventory" class="tab-panel">
       <section class="card">
-        <h2>Lab Notes</h2>
-        <p class="muted">Write observations that help the next batch turn out better.</p>
-        <label for="noteFlavor">Formula</label>
-        <select id="noteFlavor"></select>
-        <label for="noteText">Observation</label>
-        <textarea id="noteText" placeholder="Example: Better after chilling 2 hours. Use frozen strawberries, not fresh."></textarea>
-        <div class="button-row">
-          <button type="button" id="saveNoteBtn">Save Note</button>
-          <button type="button" id="clearNotesBtn" class="danger">Clear Notes</button>
-        </div>
-      </section>
-
-      <section class="card">
-        <h2>Saved Notes</h2>
-        <div id="notesList" class="empty">No lab notes yet.</div>
+        <h2>Inventory</h2>
+        <p class="muted">Check what you currently have on hand. Future versions can use this to show what formulas you can build today.</p>
+        <div id="inventoryList" class="inventory-list"></div>
       </section>
     </section>
 
@@ -137,10 +100,32 @@
       <section class="card">
         <div class="section-head">
           <h2>Experiment Log</h2>
-          <button type="button" id="clearSavedBtn" class="danger">Clear Log</button>
+          <button type="button" id="clearLogBtn" class="danger">Clear Log</button>
         </div>
-        <p class="muted">Every saved formula is recorded here with date, ingredients, calories, protein, and notes.</p>
-        <div id="savedList" class="empty">No experiments yet.</div>
+        <div id="experimentList" class="empty">No experiments logged yet.</div>
+      </section>
+    </section>
+
+    <section id="manual" class="tab-panel">
+      <section class="card manual-card">
+        <h2>Lab Manual</h2>
+        <h3>Getting Started</h3>
+        <p>Choose a formula, review the base formula, add additives if desired, then Mix.</p>
+
+        <h3>Formula</h3>
+        <p>A formula is the working version of a protein dessert. It can be changed, tested, and improved.</p>
+
+        <h3>Additives</h3>
+        <p>Additives are optional ingredients like fruit, graham crackers, PB2, juice, extracts, or sprinkles.</p>
+
+        <h3>Observations</h3>
+        <p>Use observations for what you noticed: texture, flavor, chill time, sweetness, thickness, and ratings.</p>
+
+        <h3>Conclusion</h3>
+        <p>The conclusion is the final lesson from the experiment. Write what you would repeat next time.</p>
+
+        <h3>Protocols</h3>
+        <p>A protocol is a saved formula that you want to make again.</p>
       </section>
     </section>
   </main>

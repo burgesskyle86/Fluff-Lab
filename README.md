@@ -1,16 +1,21 @@
-# Fluff Lab v1.5
+# Fluff Labs v2.0
 
-A high-protein dessert formula builder.
+Science Never Tasted So Good.
 
-## v1.5 changes
+## What's new
 
-- Renamed the main recipe area to Formula Builder.
-- Added a separate Lab Manual tab.
-- Added Lab Notes for observations and future tweaks.
-- Added an Experiment Log that records saved formulas.
-- Added a Pantry tab that shows which formulas are ready or missing ingredients.
-- Preserved the v1.4 ingredient calorie/protein display style.
+- Recipes are now Formulas.
+- Saved recipes are now Protocols.
+- Recipe notes are now Observations.
+- Pantry is now Inventory.
+- Mix-ins are now Additives.
+- Cook language has been replaced with Mix.
+- Experiment Log automatically records formula loads, additive changes, mixes, protocol saves, clones, and clears.
+- Protocols include Observations and Conclusions.
 
-## Note
+## Files
 
-Nutrition numbers should be updated once exact ingredient labels are locked in.
+- index.html
+- styles.css
+- recipes.js
+- script.js

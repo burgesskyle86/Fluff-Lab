@@ -269,18 +269,18 @@ button.danger {
   }
 }
 
-/* v1.5 lab navigation */
+/* v2.0 lab workflow */
 .tabs {
   display: flex;
   gap: 8px;
   overflow-x: auto;
-  padding-bottom: 10px;
+  padding: 4px 0 14px;
   margin-bottom: 4px;
 }
 
 .tab {
   flex: 0 0 auto;
-  background: rgba(15, 23, 42, .72);
+  background: rgba(17, 24, 39, .78);
   color: var(--text);
   border: 1px solid var(--line);
   padding: 10px 13px;
@@ -300,62 +300,44 @@ button.danger {
   display: block;
 }
 
-.manual-card h3 {
-  margin: 18px 0 8px;
-}
-
-.manual-card p,
-.manual-card li {
-  color: #cbd5e1;
-  line-height: 1.5;
-}
-
-.check-list {
+.inventory-list {
   display: grid;
   gap: 9px;
   margin-top: 14px;
 }
 
-.check-item {
+.inventory-item {
   display: flex;
   align-items: center;
   gap: 10px;
   background: var(--card-soft);
   border: 1px solid var(--line);
-  border-radius: 15px;
+  border-radius: 16px;
   padding: 11px 12px;
   color: var(--text);
-  margin-bottom: 0;
+  margin: 0;
 }
 
-.check-item input {
+.inventory-item input {
   width: auto;
 }
 
-.note-block {
-  background: rgba(2, 6, 23, .45);
-  border: 1px solid rgba(51, 65, 85, .75);
-  border-radius: 12px;
-  padding: 10px;
-  margin-top: 8px;
-  color: #e2e8f0;
+.manual-card h3 {
+  margin-bottom: 4px;
 }
 
-.ready {
-  color: var(--green);
-  font-weight: 800;
+.manual-card p {
+  color: #cbd5e1;
+  margin-top: 0;
 }
 
 details {
-  margin-top: 9px;
+  margin-top: 10px;
   color: #cbd5e1;
 }
 
 summary {
   cursor: pointer;
-  font-weight: 750;
-}
-
-.mini-button {
-  margin-top: 10px;
+  font-weight: 800;
+  color: var(--text);
 }
