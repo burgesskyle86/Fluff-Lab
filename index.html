@@ -3,28 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fluff Labs v2.3</title>
+  <title>Fluff Lab v3.0</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <main class="app">
     <header class="topbar">
+      <div class="brand-mark">⚗</div>
       <div>
-        <h1>Fluff Labs</h1>
+        <h1>Fluff Lab</h1>
         <p>Science Never Tasted So Good.</p>
       </div>
-      <span class="version">v2.3</span>
+      <span class="version">v3.0</span>
     </header>
 
     <section id="home" class="tab-panel active">
       <section class="card home-card">
-        <h2>Home</h2>
+        <p class="eyebrow">Laboratory Notebook</p>
+        <h2>Test. Taste. Perfect.</h2>
         <div class="home-actions">
           <button type="button" class="home-action primary" data-go="builder">▶ New Formula</button>
           <button type="button" class="home-action" data-go="protocols">📚 Protocols <span id="protocolCount">(0)</span></button>
           <button type="button" class="home-action" data-go="protocols" data-filter="favorites">⭐ Favorites <span id="favoriteCount">(0)</span></button>
+          <button type="button" class="home-action" data-go="experiments">🔬 Experiment Log <span id="experimentCount">(0)</span></button>
           <button type="button" class="home-action" data-go="inventory">📦 Inventory</button>
-          <button type="button" class="home-action" data-go="experiments">🔬 Experiment Log</button>
           <button type="button" class="home-action" data-go="manual">📖 Lab Manual</button>
         </div>
       </section>
@@ -32,51 +34,34 @@
 
     <section id="builder" class="tab-panel">
       <button type="button" class="ghost back-home" data-go="home">← Home</button>
-
-      <section class="card hero">
-        <label for="flavorSelect">Formula</label>
-        <select id="flavorSelect"></select>
-
-        <div class="totals">
-          <div class="total-box">
-            <div id="caloriesTotal" class="total-number">0</div>
-            <div class="total-label">Calories</div>
-          </div>
-          <div class="total-box">
-            <div id="proteinTotal" class="total-number">0g</div>
-            <div class="total-label">Protein</div>
-          </div>
+      <section class="hero-detail" id="formulaHero"></section>
+      <section class="detail-grid">
+        <section class="card">
+          <div class="section-head"><h2>1. Ingredients</h2></div>
+          <h3>Base</h3>
+          <div id="baseList" class="ingredient-list"></div>
+          <div class="section-head additives-head"><h3>Additives</h3><button type="button" id="addAdditiveBtn" class="ghost">+ Add</button></div>
+          <div id="additiveList" class="ingredient-list"></div>
+        </section>
+        <section class="card">
+          <h2>2. Method</h2>
+          <div id="methodList" class="method-list"></div>
+        </section>
+      </section>
+      <section class="card lab-card">
+        <h2>3. Experiment Notes + Conclusion</h2>
+        <div class="rating-grid">
+          <label>Texture <input id="textureRating" type="range" min="1" max="5" value="4" /></label>
+          <label>Sweetness <input id="sweetnessRating" type="range" min="1" max="5" value="4" /></label>
+          <label>Flavor <input id="flavorRating" type="range" min="1" max="5" value="4" /></label>
+          <label>Protein Satisfaction <input id="proteinRating" type="range" min="1" max="5" value="5" /></label>
         </div>
-      </section>
-
-      <section class="card">
-        <div class="section-head">
-          <h2>Base Formula</h2>
-        </div>
-        <div id="baseList" class="ingredient-list"></div>
-      </section>
-
-      <section class="card">
-        <div class="section-head">
-          <h2>Additives</h2>
-          <button type="button" id="addAdditiveBtn" class="ghost">+ Add</button>
-        </div>
-        <div id="additiveList" class="ingredient-list"></div>
-      </section>
-
-
-      <section class="card">
-        <h2>Observations</h2>
-        <textarea id="observationText" placeholder="Texture, flavor, tweaks, rating, what to try next..."></textarea>
-      </section>
-
-      <section class="card">
-        <h2>Conclusion</h2>
-        <textarea id="conclusionText" placeholder="Final takeaway: what worked, what did not, and what you would repeat."></textarea>
-
+        <label class="check-row"><input id="makeAgain" type="checkbox" checked /> Would make again</label>
+        <label>Experiment Notes<textarea id="observationText" placeholder="Texture, flavor, chill time, additives, what changed..."></textarea></label>
+        <label>Conclusion<textarea id="conclusionText" placeholder="Final takeaway: what worked, what did not, and what to repeat next time."></textarea></label>
         <div class="button-row">
           <button type="button" id="startExperimentBtn">Start Experiment</button>
-          <button type="button" id="promoteProtocolBtn">Promote to Protocol</button>
+          <button type="button" id="promoteProtocolBtn">Save as Protocol</button>
           <button type="button" id="resetBtn" class="danger">Reset Formula</button>
         </div>
       </section>
@@ -84,60 +69,24 @@
 
     <section id="protocols" class="tab-panel">
       <button type="button" class="ghost back-home" data-go="home">← Home</button>
-      <section class="card">
-        <div class="section-head">
-          <h2 id="protocolsTitle">Protocols</h2>
-          <button type="button" id="clearProtocolsBtn" class="danger">Clear Protocols</button>
-        </div>
-        <div id="protocolList" class="empty">No protocols saved yet.</div>
-      </section>
-    </section>
-
-    <section id="inventory" class="tab-panel">
-      <button type="button" class="ghost back-home" data-go="home">← Home</button>
-      <section class="card">
-        <h2>Inventory</h2>
-        <p class="muted">Check what you currently have on hand. Future versions can use this to show what formulas you can build today.</p>
-        <div id="inventoryList" class="inventory-list"></div>
-      </section>
+      <section class="card"><div class="section-head"><h2 id="protocolsTitle">Protocols</h2><button type="button" id="clearProtocolsBtn" class="danger">Clear Protocols</button></div><div id="protocolList" class="empty">No protocols saved yet.</div></section>
     </section>
 
     <section id="experiments" class="tab-panel">
       <button type="button" class="ghost back-home" data-go="home">← Home</button>
-      <section class="card">
-        <div class="section-head">
-          <h2>Experiment Log</h2>
-          <button type="button" id="clearLogBtn" class="danger">Clear Log</button>
-        </div>
-        <div id="experimentList" class="empty">No experiments logged yet.</div>
-      </section>
+      <section class="card"><div class="section-head"><h2>Experiment Log</h2><button type="button" id="clearLogBtn" class="danger">Clear Log</button></div><div id="experimentList" class="empty">No experiments logged yet.</div></section>
+    </section>
+
+    <section id="inventory" class="tab-panel">
+      <button type="button" class="ghost back-home" data-go="home">← Home</button>
+      <section class="card"><h2>Inventory</h2><p class="muted">Check what you have on hand. Future versions can use this to show what formulas you can make today.</p><div id="inventoryList" class="inventory-list"></div></section>
     </section>
 
     <section id="manual" class="tab-panel">
       <button type="button" class="ghost back-home" data-go="home">← Home</button>
-      <section class="card manual-card">
-        <h2>Lab Manual</h2>
-        <h3>Getting Started</h3>
-        <p>Start from Home, tap New Formula, choose a formula, review the base formula, add additives if desired, adjust ingredient amounts if needed, then Start Experiment. Amount/calorie/protein edits are recorded in the Experiment Log. After you mix and taste it, add observations and a conclusion, then Promote to Protocol if it is worth repeating.</p>
-
-        <h3>Formula</h3>
-        <p>A formula is the working version of a protein dessert. Ingredient amounts can be selected from dropdowns, and calories/protein update automatically. Custom entries are still available for odd measurements or exact label values.</p>
-
-        <h3>Additives</h3>
-        <p>Additives are optional ingredients like fruit, graham crackers, PB2, juice, extracts, or sprinkles.</p>
-
-        <h3>Observations</h3>
-        <p>Use observations for what you noticed: texture, flavor, chill time, sweetness, thickness, and ratings.</p>
-
-        <h3>Conclusion</h3>
-        <p>The conclusion is the final lesson from the experiment. Write what you would repeat next time.</p>
-
-        <h3>Protocols</h3>
-        <p>A protocol is a formula that has been tested and promoted because you want to make it again. Star a protocol to mark it as a favorite.</p>
-      </section>
+      <section class="card manual-card"><h2>Lab Manual</h2><h3>Formula</h3><p>A formula is the working version of a fluff recipe. Amount changes update calories and protein automatically.</p><h3>Method</h3><p>The method tells you how to make it, not just what goes into it.</p><h3>Experiment Notes + Conclusion</h3><p>Use one flowing card to rate texture, sweetness, flavor, protein satisfaction, notes, and your final conclusion.</p><h3>Protocol</h3><p>A protocol is a tested formula worth repeating.</p></section>
     </section>
   </main>
-
   <script src="recipes.js"></script>
   <script src="script.js"></script>
 </body>
