@@ -6,10 +6,10 @@ let inventory = {};
 let experimentNumber = 1;
 
 const STORAGE_KEYS = {
-  protocols: "fluffLabsV2Protocols",
-  experiments: "fluffLabsV2ExperimentLog",
-  inventory: "fluffLabsV2Inventory",
-  experimentNumber: "fluffLabsV2ExperimentNumber"
+  protocols: "fluffLabsV21Protocols",
+  experiments: "fluffLabsV21ExperimentLog",
+  inventory: "fluffLabsV21Inventory",
+  experimentNumber: "fluffLabsV21ExperimentNumber"
 };
 
 const flavorSelect = document.getElementById("flavorSelect");
@@ -45,8 +45,8 @@ function start() {
   flavorSelect.addEventListener("change", () => loadFormula(flavorSelect.value));
   document.getElementById("resetBtn").addEventListener("click", () => loadFormula(flavorSelect.value));
   document.getElementById("addAdditiveBtn").addEventListener("click", addAdditive);
-  document.getElementById("mixBtn").addEventListener("click", mixFormula);
-  document.getElementById("saveProtocolBtn").addEventListener("click", saveProtocol);
+  document.getElementById("startExperimentBtn").addEventListener("click", startExperiment);
+  document.getElementById("promoteProtocolBtn").addEventListener("click", promoteProtocol);
   document.getElementById("clearProtocolsBtn").addEventListener("click", clearProtocols);
   document.getElementById("clearLogBtn").addEventListener("click", clearExperimentLog);
 
@@ -182,23 +182,23 @@ function addAdditive() {
   renderInventory();
 }
 
-function mixFormula() {
+function startExperiment() {
   const totals = getTotals();
   const hypothesis = hypothesisText.value.trim();
   const observation = observationText.value.trim();
   const conclusion = conclusionText.value.trim();
 
-  let details = `Mixed formula: ${flavorSelect.value}. Result: ${totals.calories} calories, ${totals.protein}g protein.`;
+  let details = `Started experiment: ${flavorSelect.value}. Target result: ${totals.calories} calories, ${totals.protein}g protein.`;
   if (hypothesis) details += ` Hypothesis: ${hypothesis}`;
   if (observation) details += ` Observation: ${observation}`;
   if (conclusion) details += ` Conclusion: ${conclusion}`;
 
   logExperiment(details);
   renderExperimentLog();
-  switchTab("experiments");
+  alert("Experiment started. Mix the formula, taste it, then add observations and a conclusion before promoting it to a protocol.");
 }
 
-function saveProtocol() {
+function promoteProtocol() {
   const totals = getTotals();
   const all = [...currentBase, ...currentAdditives];
 
@@ -210,11 +210,12 @@ function saveProtocol() {
     observations: observationText.value.trim(),
     conclusion: conclusionText.value.trim(),
     ingredients: all.map(item => `${item.name} — ${item.amount}`),
+    promotedAt: new Date().toLocaleString(),
     createdAt: new Date().toLocaleString(),
     favorite: false
   });
 
-  logExperiment(`Saved protocol: ${flavorSelect.value}`);
+  logExperiment(`Promoted to protocol: ${flavorSelect.value}`);
   saveData();
   renderProtocols();
   renderExperimentLog();
@@ -228,7 +229,7 @@ function renderProtocols(onlyFavorites = false) {
 
   if (!visibleProtocols.length) {
     protocolList.className = "empty";
-    protocolList.textContent = onlyFavorites ? "No favorite protocols yet." : "No protocols saved yet.";
+    protocolList.textContent = onlyFavorites ? "No favorite protocols yet." : "No protocols promoted yet.";
     updateHomeCounts();
     return;
   }
@@ -243,7 +244,7 @@ function renderProtocols(onlyFavorites = false) {
     div.innerHTML = `
       <strong>${protocol.favorite ? "⭐ " : ""}${escapeHtml(protocol.formula)}</strong>
       <div>${protocol.calories} calories · ${protocol.protein}g protein</div>
-      <div class="muted">${escapeHtml(protocol.createdAt || "")}</div>
+      <div class="muted">${escapeHtml(protocol.promotedAt || protocol.createdAt || "")}</div>
       ${protocol.observations ? `<p><b>Observations:</b> ${escapeHtml(protocol.observations)}</p>` : ""}
       ${protocol.conclusion ? `<p><b>Conclusion:</b> ${escapeHtml(protocol.conclusion)}</p>` : ""}
       <details>
