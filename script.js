@@ -33,8 +33,7 @@ function start() {
   loadFormula("Cookies & Cream", false);
   $("resetBtn").addEventListener("click", () => loadFormula(getCurrentFormulaName(), false));
   $("addAdditiveBtn").addEventListener("click", addAdditive);
-  $("startExperimentBtn").addEventListener("click", startExperiment);
-  $("promoteProtocolBtn").addEventListener("click", promoteProtocol);
+  $("saveExperimentBtn").addEventListener("click", saveExperiment);
   $("clearProtocolsBtn").addEventListener("click", clearProtocols);
   $("clearLogBtn").addEventListener("click", clearExperimentLog);
   renderProtocols();
@@ -115,10 +114,8 @@ function renderHero(selectedName) {
       <label class="formula-select">Formula<select id="formulaSelect">${Object.keys(RECIPES).map(name => `<option value="${escapeAttribute(name)}" ${name === selectedName ? "selected" : ""}>${escapeHtml(name)}</option>`).join("")}</select></label>
       <h2 class="formula-title">${escapeHtml(formula.name)}</h2>
       <p class="muted">${escapeHtml(formula.description || "Protein fluff formula")}</p>
-      <div class="pill-row"><span class="pill">Protein Fluff</span><span class="pill">${escapeHtml(formula.difficulty || "Easy")}</span><span class="pill">1 Batch</span></div>
       <div class="totals"><div class="total-box"><div id="caloriesTotal" class="total-number">${totals.calories}</div><div class="total-label">Calories</div></div><div class="total-box"><div id="proteinTotal" class="total-number">${totals.protein}g</div><div class="total-label">Protein</div></div></div>
-    </div>
-    <div class="hero-art">${formula.image ? `<img src="${escapeAttribute(formula.image)}" alt="${escapeAttribute(formula.name)}" />` : `<div class="placeholder-art">🥣</div>`}</div>`;
+    </div>`;
   $("formulaSelect").addEventListener("change", event => loadFormula(event.target.value));
 }
 
@@ -238,22 +235,31 @@ function addAdditive() {
   renderAll(); renderInventory();
 }
 
-function startExperiment() {
-  const totals = getTotals(), ratings = getRatings();
-  logExperiment(`Started experiment. Target: ${totals.calories} calories, ${totals.protein}g protein. Current rating snapshot: ${ratingAverage(ratings)}/5.`);
-  alert("Experiment started. Make the fluff, taste it, then finish the Notes + Conclusion card.");
-}
-
-function promoteProtocol() {
+function saveExperiment() {
   const totals = getTotals(), ratings = getRatings(), all = [...currentBase, ...currentAdditives];
-  protocols.unshift({
-    formula: getCurrentFormulaName(), calories: totals.calories, protein: totals.protein,
-    observations: observationText.value.trim(), conclusion: conclusionText.value.trim(), ratings,
-    ingredients: all.map(item => `${item.name} — ${item.amount} — ${Math.round(Number(item.calories || 0))} cal / ${roundProtein(Number(item.protein || 0))}g protein`),
-    method: RECIPES[getCurrentFormulaName()]?.method || [], promotedAt: new Date().toLocaleString(), favorite: false
+  const name = getCurrentFormulaName();
+  const notes = observationText.value.trim();
+  const conclusion = conclusionText.value.trim();
+
+  experimentLog.unshift({
+    number: experimentNumber++, formula: name,
+    description: `Saved experiment. Rating: ${ratingAverage(ratings)}/5.${ratings.makeAgain ? " Would make again." : " Would not make again yet."}${notes ? " Notes: " + notes : ""}${conclusion ? " Conclusion: " + conclusion : ""}`,
+    calories: totals.calories, protein: totals.protein, ratings,
+    timestamp: new Date().toLocaleString()
   });
-  logExperiment(`Saved protocol: ${getCurrentFormulaName()} with ${ratingAverage(ratings)}/5 overall rating.`);
-  saveData(); renderProtocols(); switchTab("protocols");
+
+  protocols.unshift({
+    formula: name, calories: totals.calories, protein: totals.protein,
+    observations: notes, conclusion, ratings,
+    ingredients: all.map(item => `${item.name} — ${item.amount} — ${Math.round(Number(item.calories || 0))} cal / ${roundProtein(Number(item.protein || 0))}g protein`),
+    method: RECIPES[name]?.method || [], promotedAt: new Date().toLocaleString(), favorite: false
+  });
+
+  saveData();
+  renderProtocols();
+  renderExperimentLog();
+  alert("Experiment saved and added to Protocols.");
+  switchTab("protocols");
 }
 
 function renderProtocols(onlyFavorites = false) {
