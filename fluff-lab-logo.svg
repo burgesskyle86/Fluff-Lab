@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" role="img" aria-labelledby="title desc">
+  <title id="title">Fluff Lab primary logo</title>
+  <desc id="desc">Fluff Lab wordmark with a purple and lime chemistry flask logo.</desc>
+  <defs>
+    <linearGradient id="flaskStroke" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="62%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#7C4DFF"/>
+    </linearGradient>
+    <linearGradient id="lime" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#C6FF35"/>
+      <stop offset="100%" stop-color="#8FD91F"/>
+    </linearGradient>
+    <linearGradient id="purpleText" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="#7C4DFF"/>
+      <stop offset="100%" stop-color="#A678FF"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <g transform="translate(44 38) scale(.68)">
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M192 88h128" stroke="#ffffff" stroke-width="28"/>
+      <path d="M214 106v102L117 382c-18 32 5 72 42 72h194c37 0 60-40 42-72L298 208V106" stroke="url(#flaskStroke)" stroke-width="28" filter="url(#glow)"/>
+      <path d="M177 378h158" stroke="#A3E635" stroke-width="20" opacity=".95"/>
+    </g>
+    <g fill="url(#lime)">
+      <path d="M160 368c8-42 40-70 78-61 21 5 30 19 51 12 17-5 26-17 39-10 25 14 27 67-7 88-35 22-86 4-111 9-38 7-59-7-50-38z"/>
+      <path d="M185 363c14-18 34-20 52-9 18 10 40 8 60-7" stroke="#0D1117" stroke-width="16" stroke-linecap="round" fill="none" opacity=".7"/>
+    </g>
+    <circle cx="211" cy="182" r="13" fill="#E6EAF1"/>
+    <circle cx="242" cy="246" r="14" fill="#C084FC"/>
+    <circle cx="279" cy="290" r="9" fill="#E6EAF1"/>
+    <circle cx="256" cy="54" r="13" fill="#7C4DFF"/>
+    <circle cx="207" cy="45" r="20" fill="#A3E635"/>
+    <circle cx="231" cy="82" r="12" fill="#7C4DFF"/>
+  </g>
+
+  <text x="390" y="190" font-family="Poppins, Inter, system-ui, -apple-system, Segoe UI, sans-serif" font-size="116" font-weight="800" fill="#ffffff">Fluff</text>
+  <text x="720" y="190" font-family="Poppins, Inter, system-ui, -apple-system, Segoe UI, sans-serif" font-size="116" font-weight="800" fill="url(#purpleText)">Lab</text>
+  <text x="396" y="270" font-family="Poppins, Inter, system-ui, -apple-system, Segoe UI, sans-serif" font-size="38" font-weight="800" letter-spacing="8" fill="#A3E635">SCIENCE NEVER TASTED SO GOOD.</text>
+</svg>
