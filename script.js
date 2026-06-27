@@ -58,9 +58,10 @@ function renderList(container, items, type) {
     row.className = "ingredient";
 
     row.innerHTML = `
-      <div class="ingredient-main">
-        <div class="ingredient-title">${escapeHtml(item.name)}</div>
+      <div class="ingredient-title">${escapeHtml(item.name)}</div>
+      <div class="ingredient-bottom">
         <div class="ingredient-meta">${escapeHtml(item.amount)}</div>
+        <div class="ingredient-nutrition">C:${Math.round(Number(item.calories || 0))} &nbsp; P:${Math.round(Number(item.protein || 0))}g</div>
       </div>
     `;
 

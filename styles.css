@@ -219,3 +219,52 @@ button.danger {
 
 
 .reset-full{width:100%;}
+
+
+/* v1.4 ingredient nutrition layout */
+.ingredient-main {
+  display: block;
+}
+
+.ingredient-title {
+  font-weight: 750;
+  font-size: 1rem;
+}
+
+.ingredient-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.ingredient-meta {
+  color: #cbd5e1;
+  font-size: .95rem;
+  margin-top: 0;
+}
+
+.ingredient-nutrition {
+  color: #f59e0b;
+  font-size: .92rem;
+  font-weight: 800;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.reset-full {
+  width: 100%;
+}
+
+@media (max-width: 380px) {
+  .ingredient-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .ingredient-nutrition {
+    text-align: left;
+  }
+}

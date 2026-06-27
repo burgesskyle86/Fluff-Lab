@@ -1,22 +1,11 @@
-# Fluff Lab v1.2
+# Fluff Lab v1.4
 
-## What changed from v1.0
+Recipe card app for protein fluff.
 
-- Removed calorie and protein fields from each ingredient card.
-- Ingredients now show only name and amount.
-- Total calories and protein are shown at the top.
-- Split app into separate project files like Atlas:
-  - index.html
-  - styles.css
-  - recipes.js
-  - script.js
-  - data/
-  - assets/
-
-## Upload to GitHub Pages
-
-Upload these files to your Fluff Lab repository.
-
-The main file must stay named:
-
-index.html
+## v1.4 changes
+- Added per-ingredient nutrition on each recipe card.
+- Shows calories and protein as `C:120  P:23g`.
+- Nutrition text is orange for quick scanning.
+- Keeps ingredient cards read-only and uncluttered.
+- Preserves total calories and protein at the top.
+- Keeps v1.3 recipe-card layout with no amount text boxes.
