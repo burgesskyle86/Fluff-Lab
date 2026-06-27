@@ -59,23 +59,11 @@ function renderList(container, items, type) {
 
     row.innerHTML = `
       <div class="ingredient-main">
-        <div>
-          <div class="ingredient-title">${escapeHtml(item.name)}</div>
-          <div class="ingredient-meta">${escapeHtml(item.amount)}</div>
-        </div>
-        <input class="amount-input" aria-label="Amount for ${escapeHtml(item.name)}" value="${escapeHtml(item.amount)}" />
+        <div class="ingredient-title">${escapeHtml(item.name)}</div>
+        <div class="ingredient-meta">${escapeHtml(item.amount)}</div>
       </div>
     `;
 
-    const input = row.querySelector("input");
-    input.addEventListener("input", () => {
-      item.amount = input.value;
-    });
-
-    input.addEventListener("change", () => {
-      recalcFromAmount(item);
-      updateTotals();
-    });
 
     if (type === "mixins") {
       const remove = document.createElement("button");

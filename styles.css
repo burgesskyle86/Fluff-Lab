@@ -101,7 +101,7 @@ textarea {
 }
 
 .totals {
-  display: grid;
+  display: flex;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   margin-top: 14px;
@@ -142,12 +142,12 @@ textarea {
   background: var(--card-soft);
   border: 1px solid var(--line);
   border-radius: 18px;
-  padding: 13px;
+  padding: 12px 14px;
 }
 
 .ingredient-main {
   display: grid;
-  grid-template-columns: 1fr 150px;
+  flex-direction: column;
   gap: 10px;
   align-items: center;
 }
@@ -159,18 +159,16 @@ textarea {
 }
 
 .ingredient-title {
-  font-weight: 750;
+  font-weight:700;
+  font-size:1rem;
 }
 
 .ingredient-meta {
-  color: var(--muted);
-  font-size: .9rem;
-  margin-top: 3px;
+  color:#cbd5e1;
+  font-size:.95rem;
+  margin-top:3px;
 }
 
-.amount-input {
-  text-align: right;
-}
 
 .button-row {
   display: flex;
@@ -218,3 +216,6 @@ button.danger {
 .muted {
   color: var(--muted);
 }
+
+
+.reset-full{width:100%;}
