@@ -3,72 +3,121 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fluff Lab v1.4</title>
+  <title>Fluff Lab v1.5</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main class="app">
+  <div class="app-shell">
     <header class="topbar">
       <div>
+        <p class="eyebrow">High Protein Dessert Laboratory</p>
         <h1>Fluff Lab</h1>
-        <p>Protein dessert builder</p>
       </div>
-      <span class="version">v1.4</span>
+      <div class="badge">v1.5</div>
     </header>
 
-    <section class="card hero">
-      <label for="flavorSelect">Flavor</label>
-      <select id="flavorSelect"></select>
+    <nav class="tabs" aria-label="Fluff Lab sections">
+      <button class="tab active" data-tab="builder">Formula Builder</button>
+      <button class="tab" data-tab="pantry">Pantry</button>
+      <button class="tab" data-tab="manual">Lab Manual</button>
+      <button class="tab" data-tab="notes">Lab Notes</button>
+      <button class="tab" data-tab="log">Experiment Log</button>
+    </nav>
 
-      <div class="totals">
-        <div class="total-box">
-          <div id="caloriesTotal" class="total-number">0</div>
-          <div class="total-label">Calories</div>
+    <main>
+      <section id="builder" class="panel active">
+        <div class="card hero-card">
+          <div>
+            <p class="eyebrow">Current Formula</p>
+            <h2 id="formulaTitle">Base Protein Fluff</h2>
+            <p class="muted">Pick a protocol, tweak the mix-ins, and record the experiment.</p>
+          </div>
+          <select id="flavorSelect" class="select"></select>
         </div>
-        <div class="total-box">
-          <div id="proteinTotal" class="total-number">0g</div>
-          <div class="total-label">Protein</div>
+
+        <div class="grid two">
+          <div class="card">
+            <h3>Protocol Ingredients</h3>
+            <div id="ingredientList" class="ingredient-list"></div>
+            <button id="addIngredientBtn" class="secondary full">Add Ingredient</button>
+          </div>
+
+          <div class="card">
+            <h3>Nutrition</h3>
+            <div class="nutrition-box">
+              <div><span id="totalCalories">0</span><small>Calories</small></div>
+              <div><span id="totalProtein">0g</span><small>Protein</small></div>
+            </div>
+            <label class="field-label" for="batchNotes">Observation</label>
+            <textarea id="batchNotes" rows="6" placeholder="Example: Better after chilling 2 hours. Use less pudding next time."></textarea>
+            <button id="saveExperimentBtn" class="primary full">Save Experiment</button>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="card">
-      <div class="section-head">
-        <h2>Base Ingredients</h2>
-        
-      </div>
-      <div id="baseList" class="ingredient-list"></div>
-    </section>
+      <section id="pantry" class="panel">
+        <div class="card">
+          <h2>Pantry</h2>
+          <p class="muted">Check what you have on hand. This is the ingredient inventory for quick formula planning.</p>
+          <div id="pantryList" class="pantry-list"></div>
+        </div>
+      </section>
 
-    <section class="card">
-      <div class="section-head">
-        <h2>Mix-ins</h2>
-        <button type="button" id="addMixInBtn" class="ghost">+ Add</button>
-      </div>
-      <div id="mixInList" class="ingredient-list"></div>
-    </section>
+      <section id="manual" class="panel">
+        <div class="card">
+          <h2>Lab Manual</h2>
+          <div class="manual-section">
+            <h3>Getting Started</h3>
+            <p>Choose a formula, review the ingredients, adjust amounts if needed, then mix.</p>
+          </div>
+          <div class="manual-section">
+            <h3>How Fluff Lab Works</h3>
+            <p>Fluff Lab tracks calories and protein while you experiment with high-protein dessert formulas.</p>
+          </div>
+          <div class="manual-section">
+            <h3>Understanding Ingredients</h3>
+            <p>The base usually includes yogurt, protein, whipped topping, pudding mix, and acacia fiber. Mix-ins change the flavor.</p>
+          </div>
+          <div class="manual-section">
+            <h3>Texture Troubleshooting</h3>
+            <ul>
+              <li>Too thick: add a small splash of milk.</li>
+              <li>Too thin: add a little pudding mix or chill longer.</li>
+              <li>Grainy: mix longer and scrape the sides.</li>
+              <li>Frozen fruit: thaw slightly before mixing.</li>
+            </ul>
+          </div>
+          <div class="manual-section">
+            <h3>Nutrition</h3>
+            <p>The app intentionally tracks calories and protein only, keeping the screen clean and focused.</p>
+          </div>
+        </div>
+      </section>
 
-    <section class="card">
-      <h2>Recipe Notes</h2>
-      <textarea id="recipeNotes" placeholder="Texture, tweaks, next experiment..."></textarea>
+      <section id="notes" class="panel">
+        <div class="card">
+          <h2>Lab Notes</h2>
+          <p class="muted">Personal observations, tweaks, ratings, and next-batch reminders.</p>
+          <label class="field-label" for="noteFlavor">Formula</label>
+          <input id="noteFlavor" type="text" placeholder="Strawberry Cheesecake" />
+          <label class="field-label" for="noteText">Notes</label>
+          <textarea id="noteText" rows="6" placeholder="Observation #1: Better with frozen strawberries and 2 hours chill time."></textarea>
+          <button id="saveNoteBtn" class="primary full">Save Lab Note</button>
+          <div id="notesList" class="log-list"></div>
+        </div>
+      </section>
 
-      <div class="button-row">
-        <button type="button" id="saveBtn">Save Recipe</button>
-        <button type="button" id="clearSavedBtn" class="danger">Clear Saved</button>
-      </div>
-    </section>
+      <section id="log" class="panel">
+        <div class="card">
+          <h2>Experiment Log</h2>
+          <p class="muted">Every saved batch gets recorded here so you can find what worked.</p>
+          <div id="experimentList" class="log-list"></div>
+          <button id="clearLogBtn" class="danger full">Clear Experiment Log</button>
+        </div>
+      </section>
+    </main>
+  </div>
 
-    <section class="card">
-      <button type="button" id="resetBtn" class="danger reset-full">Reset Recipe</button>
-    </section>
-
-    <section class="card">
-      <h2>Saved Recipes</h2>
-      <div id="savedList" class="empty">No saved recipes yet.</div>
-    </section>
-  </main>
-
-  <script src="recipes.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

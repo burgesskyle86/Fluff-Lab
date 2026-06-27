@@ -1,165 +1,256 @@
-let currentBase = [];
-let currentMixins = [];
-let savedRecipes = [];
+const STORAGE_KEYS = {
+  experiments: 'fluffLabV15Experiments',
+  notes: 'fluffLabV15Notes',
+  pantry: 'fluffLabV15Pantry'
+};
 
-const flavorSelect = document.getElementById("flavorSelect");
-const baseList = document.getElementById("baseList");
-const mixInList = document.getElementById("mixInList");
-const caloriesTotal = document.getElementById("caloriesTotal");
-const proteinTotal = document.getElementById("proteinTotal");
-const recipeNotes = document.getElementById("recipeNotes");
-const savedList = document.getElementById("savedList");
+const ingredientBank = [
+  { name: 'Chobani Nonfat Greek Yogurt', unit: 'cup', calories: 120, protein: 21 },
+  { name: 'Transparent Labs Chocolate Whey', unit: 'scoop', calories: 120, protein: 28 },
+  { name: 'Transparent Labs Vanilla Whey', unit: 'scoop', calories: 120, protein: 28 },
+  { name: 'Sugar Free Cheesecake Pudding Mix', unit: 'tbsp', calories: 25, protein: 0 },
+  { name: 'Sugar Free Vanilla Pudding Mix', unit: 'tbsp', calories: 25, protein: 0 },
+  { name: 'Lite Whipped Topping', unit: 'tbsp', calories: 20, protein: 0 },
+  { name: 'Acacia Fiber', unit: 'tbsp', calories: 30, protein: 0 },
+  { name: 'Frozen Strawberries', unit: 'cup', calories: 50, protein: 1 },
+  { name: 'Frozen Blueberries', unit: 'cup', calories: 80, protein: 1 },
+  { name: 'Key Lime Juice', unit: 'tbsp', calories: 4, protein: 0 },
+  { name: 'Graham Cracker Crumbs', unit: 'tbsp', calories: 32, protein: 0.5 }
+];
 
-function clone(items) {
-  return items.map(item => ({ ...item }));
+const formulas = [
+  {
+    name: 'Base Protein Fluff',
+    ingredients: [
+      ['Chobani Nonfat Greek Yogurt', 1],
+      ['Transparent Labs Chocolate Whey', 1],
+      ['Sugar Free Cheesecake Pudding Mix', 1],
+      ['Lite Whipped Topping', 2],
+      ['Acacia Fiber', 1]
+    ]
+  },
+  {
+    name: 'Strawberry Cheesecake',
+    ingredients: [
+      ['Chobani Nonfat Greek Yogurt', 1],
+      ['Transparent Labs Vanilla Whey', 1],
+      ['Sugar Free Cheesecake Pudding Mix', 1],
+      ['Lite Whipped Topping', 2],
+      ['Acacia Fiber', 1],
+      ['Frozen Strawberries', 0.5],
+      ['Graham Cracker Crumbs', 1]
+    ]
+  },
+  {
+    name: 'Key Lime Pie',
+    ingredients: [
+      ['Chobani Nonfat Greek Yogurt', 1],
+      ['Transparent Labs Vanilla Whey', 1],
+      ['Sugar Free Vanilla Pudding Mix', 1],
+      ['Lite Whipped Topping', 2],
+      ['Acacia Fiber', 1],
+      ['Key Lime Juice', 2],
+      ['Graham Cracker Crumbs', 1]
+    ]
+  }
+];
+
+let currentIngredients = [];
+
+const $ = (id) => document.getElementById(id);
+const findIngredient = (name) => ingredientBank.find(i => i.name === name) || ingredientBank[0];
+const round = (n) => Math.round(n * 10) / 10;
+
+function save(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
+function load(key, fallback) {
+  try { return JSON.parse(localStorage.getItem(key)) ?? fallback; }
+  catch { return fallback; }
 }
 
-function start() {
-  Object.keys(RECIPES).forEach(flavor => {
-    const option = document.createElement("option");
-    option.value = flavor;
-    option.textContent = flavor;
-    flavorSelect.appendChild(option);
+function initTabs() {
+  document.querySelectorAll('.tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      $(btn.dataset.tab).classList.add('active');
+    });
+  });
+}
+
+function initFlavorSelect() {
+  const select = $('flavorSelect');
+  formulas.forEach((f, idx) => {
+    const opt = document.createElement('option');
+    opt.value = idx;
+    opt.textContent = f.name;
+    select.appendChild(opt);
+  });
+  select.addEventListener('change', () => loadFormula(Number(select.value)));
+  loadFormula(0);
+}
+
+function loadFormula(index) {
+  const formula = formulas[index];
+  $('formulaTitle').textContent = formula.name;
+  currentIngredients = formula.ingredients.map(([name, amount]) => ({ name, amount }));
+  renderIngredients();
+}
+
+function renderIngredients() {
+  const list = $('ingredientList');
+  list.innerHTML = '';
+  currentIngredients.forEach((row, index) => {
+    const info = findIngredient(row.name);
+    const el = document.createElement('div');
+    el.className = 'ingredient-row';
+    el.innerHTML = `
+      <select data-index="${index}" class="ingredient-name"></select>
+      <input data-index="${index}" class="ingredient-amount" type="number" step="0.25" min="0" value="${row.amount}">
+      <span class="muted">${info.unit}</span>
+      <span class="nutrient-pill">C: ${round(info.calories * row.amount)} | P: ${round(info.protein * row.amount)}g</span>
+      <button class="remove-btn" data-index="${index}">Remove</button>
+    `;
+    const select = el.querySelector('.ingredient-name');
+    ingredientBank.forEach(item => {
+      const opt = document.createElement('option');
+      opt.value = item.name;
+      opt.textContent = item.name;
+      if (item.name === row.name) opt.selected = true;
+      select.appendChild(opt);
+    });
+    list.appendChild(el);
   });
 
-  flavorSelect.value = "Key Lime Pie";
-  loadFlavor("Key Lime Pie");
-
-  flavorSelect.addEventListener("change", () => loadFlavor(flavorSelect.value));
-  document.getElementById("resetBtn").addEventListener("click", () => loadFlavor(flavorSelect.value));
-  document.getElementById("addMixInBtn").addEventListener("click", addMixIn);
-  document.getElementById("saveBtn").addEventListener("click", saveRecipe);
-  document.getElementById("clearSavedBtn").addEventListener("click", clearSaved);
-}
-
-function loadFlavor(flavor) {
-  currentBase = clone(RECIPES[flavor].base);
-  currentMixins = clone(RECIPES[flavor].mixins);
-  recipeNotes.value = "";
-  renderAll();
-}
-
-function renderAll() {
-  renderList(baseList, currentBase, "base");
-  renderList(mixInList, currentMixins, "mixins");
+  document.querySelectorAll('.ingredient-name').forEach(sel => {
+    sel.addEventListener('change', e => {
+      currentIngredients[e.target.dataset.index].name = e.target.value;
+      renderIngredients();
+    });
+  });
+  document.querySelectorAll('.ingredient-amount').forEach(input => {
+    input.addEventListener('input', e => {
+      currentIngredients[e.target.dataset.index].amount = Number(e.target.value || 0);
+      renderIngredients();
+    });
+  });
+  document.querySelectorAll('.remove-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      currentIngredients.splice(Number(e.target.dataset.index), 1);
+      renderIngredients();
+    });
+  });
   updateTotals();
 }
 
-function renderList(container, items, type) {
-  container.innerHTML = "";
-
-  if (!items.length) {
-    container.innerHTML = `<div class="empty">No mix-ins yet.</div>`;
-    return;
-  }
-
-  items.forEach((item, index) => {
-    const row = document.createElement("div");
-    row.className = "ingredient";
-
-    row.innerHTML = `
-      <div class="ingredient-title">${escapeHtml(item.name)}</div>
-      <div class="ingredient-bottom">
-        <div class="ingredient-meta">${escapeHtml(item.amount)}</div>
-        <div class="ingredient-nutrition">C:${Math.round(Number(item.calories || 0))} &nbsp; P:${Math.round(Number(item.protein || 0))}g</div>
-      </div>
-    `;
-
-
-    if (type === "mixins") {
-      const remove = document.createElement("button");
-      remove.type = "button";
-      remove.className = "ghost";
-      remove.style.marginTop = "10px";
-      remove.textContent = "Remove";
-      remove.addEventListener("click", () => {
-        currentMixins.splice(index, 1);
-        renderAll();
-      });
-      row.appendChild(remove);
-    }
-
-    container.appendChild(row);
-  });
-}
-
-function recalcFromAmount(item) {
-  // v1.2 keeps macro math simple.
-  // This placeholder keeps the app ready for v1.3 gram-based scaling.
-  return item;
-}
-
 function updateTotals() {
-  const all = [...currentBase, ...currentMixins];
-  const calories = all.reduce((sum, item) => sum + Number(item.calories || 0), 0);
-  const protein = all.reduce((sum, item) => sum + Number(item.protein || 0), 0);
-
-  caloriesTotal.textContent = Math.round(calories);
-  proteinTotal.textContent = `${Math.round(protein)}g`;
-}
-
-function addMixIn() {
-  const name = prompt("Mix-in name?");
-  if (!name) return;
-
-  const amount = prompt("Amount? Example: 50 g, 1 tbsp, 1 cookie") || "custom";
-  const calories = Number(prompt("Calories?") || 0);
-  const protein = Number(prompt("Protein grams?") || 0);
-
-  currentMixins.push({ name, amount, calories, protein });
-  renderAll();
-}
-
-function saveRecipe() {
-  const all = [...currentBase, ...currentMixins];
-  const calories = all.reduce((sum, item) => sum + Number(item.calories || 0), 0);
-  const protein = all.reduce((sum, item) => sum + Number(item.protein || 0), 0);
-
-  savedRecipes.unshift({
-    flavor: flavorSelect.value,
-    calories: Math.round(calories),
-    protein: Math.round(protein),
-    notes: recipeNotes.value.trim(),
-    ingredients: all.map(item => `${item.name} — ${item.amount}`)
+  let calories = 0;
+  let protein = 0;
+  currentIngredients.forEach(row => {
+    const info = findIngredient(row.name);
+    calories += info.calories * row.amount;
+    protein += info.protein * row.amount;
   });
-
-  renderSaved();
+  $('totalCalories').textContent = Math.round(calories);
+  $('totalProtein').textContent = `${round(protein)}g`;
 }
 
-function renderSaved() {
-  if (!savedRecipes.length) {
-    savedList.className = "empty";
-    savedList.textContent = "No saved recipes yet.";
-    return;
-  }
+function initPantry() {
+  const saved = load(STORAGE_KEYS.pantry, {});
+  const list = $('pantryList');
+  list.innerHTML = '';
+  ingredientBank.forEach(item => {
+    const label = document.createElement('label');
+    label.className = 'pantry-item';
+    label.innerHTML = `<input type="checkbox" ${saved[item.name] ? 'checked' : ''}> <span>${item.name}</span>`;
+    label.querySelector('input').addEventListener('change', e => {
+      saved[item.name] = e.target.checked;
+      save(STORAGE_KEYS.pantry, saved);
+    });
+    list.appendChild(label);
+  });
+}
 
-  savedList.className = "";
-  savedList.innerHTML = "";
+function saveExperiment() {
+  const experiments = load(STORAGE_KEYS.experiments, []);
+  const entry = {
+    date: new Date().toLocaleString(),
+    formula: $('formulaTitle').textContent,
+    calories: $('totalCalories').textContent,
+    protein: $('totalProtein').textContent,
+    notes: $('batchNotes').value.trim(),
+    ingredients: currentIngredients.map(row => {
+      const info = findIngredient(row.name);
+      return `${row.amount} ${info.unit} ${row.name}`;
+    })
+  };
+  experiments.unshift(entry);
+  save(STORAGE_KEYS.experiments, experiments);
+  $('batchNotes').value = '';
+  renderExperiments();
+}
 
-  savedRecipes.forEach(recipe => {
-    const div = document.createElement("div");
-    div.className = "saved";
-    div.innerHTML = `
-      <strong>${escapeHtml(recipe.flavor)}</strong>
-      <div>${recipe.calories} calories · ${recipe.protein}g protein</div>
-      ${recipe.notes ? `<div class="muted">${escapeHtml(recipe.notes)}</div>` : ""}
+function renderExperiments() {
+  const experiments = load(STORAGE_KEYS.experiments, []);
+  const list = $('experimentList');
+  list.innerHTML = experiments.length ? '' : '<p class="muted">No experiments saved yet.</p>';
+  experiments.forEach((entry, idx) => {
+    const el = document.createElement('div');
+    el.className = 'log-item';
+    el.innerHTML = `
+      <div class="log-meta">Experiment #${experiments.length - idx} • ${entry.date}</div>
+      <h3>${entry.formula}</h3>
+      <p><strong>${entry.calories} Cal | ${entry.protein} Protein</strong></p>
+      <p>${entry.ingredients.join('<br>')}</p>
+      ${entry.notes ? `<p><strong>Observation:</strong> ${entry.notes}</p>` : ''}
     `;
-    savedList.appendChild(div);
+    list.appendChild(el);
   });
 }
 
-function clearSaved() {
-  savedRecipes = [];
-  renderSaved();
+function saveNote() {
+  const flavor = $('noteFlavor').value.trim();
+  const text = $('noteText').value.trim();
+  if (!flavor && !text) return;
+  const notes = load(STORAGE_KEYS.notes, []);
+  notes.unshift({ date: new Date().toLocaleString(), flavor, text });
+  save(STORAGE_KEYS.notes, notes);
+  $('noteFlavor').value = '';
+  $('noteText').value = '';
+  renderNotes();
 }
 
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+function renderNotes() {
+  const notes = load(STORAGE_KEYS.notes, []);
+  const list = $('notesList');
+  list.innerHTML = notes.length ? '' : '<p class="muted">No lab notes yet.</p>';
+  notes.forEach(note => {
+    const el = document.createElement('div');
+    el.className = 'log-item';
+    el.innerHTML = `
+      <div class="log-meta">${note.date}</div>
+      <h3>${note.flavor || 'General Note'}</h3>
+      <p>${note.text}</p>
+    `;
+    list.appendChild(el);
+  });
 }
 
-start();
+$('addIngredientBtn').addEventListener('click', () => {
+  currentIngredients.push({ name: ingredientBank[0].name, amount: 1 });
+  renderIngredients();
+});
+$('saveExperimentBtn').addEventListener('click', saveExperiment);
+$('saveNoteBtn').addEventListener('click', saveNote);
+$('clearLogBtn').addEventListener('click', () => {
+  if (confirm('Clear all saved experiments?')) {
+    save(STORAGE_KEYS.experiments, []);
+    renderExperiments();
+  }
+});
+
+initTabs();
+initFlavorSelect();
+initPantry();
+renderExperiments();
+renderNotes();
