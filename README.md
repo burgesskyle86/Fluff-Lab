@@ -1,8 +1,8 @@
-# Fluff Labs v2.2
+# Fluff Labs v2.3
 
 Science Never Tasted So Good.
 
-## Changes in v2.2
+## Changes in v2.3
 - Removed Hypothesis from Formula Builder.
 - Ingredient amounts are now editable directly in the formula.
 - Calories and protein are editable too, so totals can be corrected when labels differ.
@@ -16,3 +16,9 @@ Science Never Tasted So Good.
 4. Mix and taste
 5. Add Observations and Conclusion
 6. Promote to Protocol
+
+
+## v2.3
+- Added amount dropdowns for ingredients.
+- Calories and protein now scale automatically when an amount preset is selected.
+- Custom amount remains available for odd measurements or label-specific entries.

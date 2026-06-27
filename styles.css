@@ -409,3 +409,18 @@ summary {
     grid-template-columns: 1fr;
   }
 }
+
+/* v2.3 amount dropdown scaling */
+.hidden {
+  display: none;
+}
+
+.amount-grid {
+  grid-template-columns: 1.2fr 1.2fr .8fr .8fr;
+}
+
+@media (max-width: 620px) {
+  .amount-grid {
+    grid-template-columns: 1fr;
+  }
+}

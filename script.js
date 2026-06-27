@@ -6,10 +6,10 @@ let inventory = {};
 let experimentNumber = 1;
 
 const STORAGE_KEYS = {
-  protocols: "fluffLabsV21Protocols",
-  experiments: "fluffLabsV21ExperimentLog",
-  inventory: "fluffLabsV21Inventory",
-  experimentNumber: "fluffLabsV21ExperimentNumber"
+  protocols: "fluffLabsV23Protocols",
+  experiments: "fluffLabsV23ExperimentLog",
+  inventory: "fluffLabsV23Inventory",
+  experimentNumber: "fluffLabsV23ExperimentNumber"
 };
 
 const flavorSelect = document.getElementById("flavorSelect");
@@ -24,7 +24,81 @@ const experimentList = document.getElementById("experimentList");
 const inventoryList = document.getElementById("inventoryList");
 
 function clone(items) {
-  return items.map(item => ({ ...item }));
+  return items.map(item => prepareIngredient({ ...item }));
+}
+
+function prepareIngredient(item) {
+  const baseAmount = item.baseAmount || item.amount || "";
+  const baseCalories = Number(item.baseCalories ?? item.calories ?? 0);
+  const baseProtein = Number(item.baseProtein ?? item.protein ?? 0);
+  const scale = Number(item.scale || 1);
+  return {
+    ...item,
+    baseAmount,
+    baseCalories,
+    baseProtein,
+    scale,
+    amount: item.amount || formatScaledAmount(baseAmount, scale),
+    calories: Number(item.calories ?? Math.round(baseCalories * scale)),
+    protein: Number(item.protein ?? roundProtein(baseProtein * scale))
+  };
+}
+
+function getAmountOptions(item) {
+  const baseAmount = item.baseAmount || item.amount || "custom";
+  const scales = [.25, .5, .75, 1, 1.25, 1.5, 2];
+  const seen = new Set();
+  const options = scales.map(scale => {
+    const amount = formatScaledAmount(baseAmount, scale);
+    const key = `${scale}|${amount}`;
+    if (seen.has(key)) return null;
+    seen.add(key);
+    return { scale, amount };
+  }).filter(Boolean);
+
+  if (!options.some(option => String(option.amount) === String(item.amount))) {
+    options.push({ scale: "custom", amount: item.amount || "custom" });
+  }
+  return options;
+}
+
+function formatScaledAmount(baseAmount, scale) {
+  const text = String(baseAmount || "custom").trim();
+  if (!text || scale === "custom") return text || "custom";
+
+  const fractionMap = { "1/2": .5, "1/3": 1 / 3, "2/3": 2 / 3, "1/4": .25, "3/4": .75 };
+  const match = text.match(/^(\d+(?:\.\d+)?|\d+\/\d+)\s*(.*)$/);
+  if (!match) return scale === 1 ? text : `${scale}× ${text}`;
+
+  const rawNumber = match[1];
+  const unit = match[2].trim();
+  let baseNumber;
+  if (rawNumber.includes("/")) {
+    const [top, bottom] = rawNumber.split("/").map(Number);
+    baseNumber = bottom ? top / bottom : Number(rawNumber);
+  } else {
+    baseNumber = Number(rawNumber);
+  }
+
+  if (!Number.isFinite(baseNumber)) return scale === 1 ? text : `${scale}× ${text}`;
+  const scaled = baseNumber * Number(scale);
+  const display = formatNumber(scaled);
+  return `${display}${unit ? " " + unit : ""}`;
+}
+
+function formatNumber(value) {
+  const commonFractions = [
+    [0.25, "1/4"], [0.3333333333, "1/3"], [0.5, "1/2"], [0.6666666667, "2/3"], [0.75, "3/4"]
+  ];
+  for (const [decimal, label] of commonFractions) {
+    if (Math.abs(value - decimal) < .01) return label;
+  }
+  if (Math.abs(value - Math.round(value)) < .01) return String(Math.round(value));
+  return String(Math.round(value * 10) / 10);
+}
+
+function roundProtein(value) {
+  return Math.round(value * 10) / 10;
 }
 
 function start() {
@@ -127,11 +201,21 @@ function renderList(container, items, type) {
     const row = document.createElement("div");
     row.className = "ingredient";
 
+    const amountOptions = getAmountOptions(item);
+    const customSelected = !amountOptions.some(option => option.scale !== "custom" && Number(option.scale) === Number(item.scale));
+
     row.innerHTML = `
       <div class="ingredient-title">${escapeHtml(item.name)}</div>
-      <div class="edit-grid">
+      <div class="edit-grid amount-grid">
         <label>
           <span>Amount</span>
+          <select class="ingredient-input amount-select" data-field="amountScale">
+            ${amountOptions.map(option => `<option value="${option.scale}" ${String(option.scale) === String(item.scale) ? "selected" : ""}>${escapeHtml(option.amount)}</option>`).join("")}
+            <option value="custom" ${customSelected ? "selected" : ""}>Custom</option>
+          </select>
+        </label>
+        <label class="custom-amount-wrap ${customSelected ? "" : "hidden"}">
+          <span>Custom Amount</span>
           <input type="text" class="ingredient-input" data-field="amount" value="${escapeAttribute(item.amount || "")}" />
         </label>
         <label>
@@ -140,12 +224,15 @@ function renderList(container, items, type) {
         </label>
         <label>
           <span>Protein</span>
-          <input type="number" class="ingredient-input" data-field="protein" value="${Number(item.protein || 0)}" inputmode="decimal" />
+          <input type="number" class="ingredient-input" data-field="protein" value="${Number(item.protein || 0)}" inputmode="decimal" step="0.1" />
         </label>
       </div>
     `;
 
-    row.querySelectorAll(".ingredient-input").forEach(input => {
+    const amountSelect = row.querySelector(".amount-select");
+    amountSelect.addEventListener("change", () => updateIngredientAmountScale(type, index, amountSelect.value));
+
+    row.querySelectorAll(".ingredient-input[data-field]:not(.amount-select)").forEach(input => {
       input.addEventListener("change", () => updateIngredient(type, index, input.dataset.field, input.value));
     });
 
@@ -167,6 +254,31 @@ function renderList(container, items, type) {
   });
 }
 
+function updateIngredientAmountScale(type, index, scaleValue) {
+  const list = type === "base" ? currentBase : currentAdditives;
+  const item = list[index];
+  if (!item) return;
+
+  if (scaleValue === "custom") {
+    item.scale = "custom";
+    renderAll();
+    return;
+  }
+
+  const oldAmount = item.amount;
+  const oldCalories = item.calories;
+  const oldProtein = item.protein;
+  const scale = Number(scaleValue);
+
+  item.scale = scale;
+  item.amount = formatScaledAmount(item.baseAmount || item.amount, scale);
+  item.calories = Math.round(Number(item.baseCalories || 0) * scale);
+  item.protein = roundProtein(Number(item.baseProtein || 0) * scale);
+
+  renderAll();
+  logExperiment(`Changed ${item.name} from ${oldAmount} (${oldCalories} cal, ${oldProtein}g protein) to ${item.amount} (${item.calories} cal, ${item.protein}g protein).`);
+}
+
 function updateIngredient(type, index, field, value) {
   const list = type === "base" ? currentBase : currentAdditives;
   const item = list[index];
@@ -177,6 +289,7 @@ function updateIngredient(type, index, field, value) {
   if (String(oldValue) === String(cleanValue)) return;
 
   item[field] = cleanValue;
+  if (field === "amount") item.scale = "custom";
   updateTotals();
 
   const fieldLabel = field === "protein" ? "protein" : field;
@@ -205,7 +318,7 @@ function addAdditive() {
   const calories = Number(prompt("Calories?") || 0);
   const protein = Number(prompt("Protein grams?") || 0);
 
-  currentAdditives.push({ name, amount, calories, protein });
+  currentAdditives.push(prepareIngredient({ name, amount, calories, protein }));
   logExperiment(`Added additive: ${name} — ${amount}`);
   renderAll();
   renderInventory();
@@ -235,7 +348,7 @@ function promoteProtocol() {
     protein: totals.protein,
     observations: observationText.value.trim(),
     conclusion: conclusionText.value.trim(),
-    ingredients: all.map(item => `${item.name} — ${item.amount}`),
+    ingredients: all.map(item => `${item.name} — ${item.amount} — ${Math.round(Number(item.calories || 0))} cal / ${roundProtein(Number(item.protein || 0))}g protein`),
     promotedAt: new Date().toLocaleString(),
     createdAt: new Date().toLocaleString(),
     favorite: false
