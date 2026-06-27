@@ -1,11 +1,16 @@
-# Fluff Lab v1.4
+# Fluff Lab v1.5
 
-Recipe card app for protein fluff.
+A high-protein dessert formula builder.
 
-## v1.4 changes
-- Added per-ingredient nutrition on each recipe card.
-- Shows calories and protein as `C:120  P:23g`.
-- Nutrition text is orange for quick scanning.
-- Keeps ingredient cards read-only and uncluttered.
-- Preserves total calories and protein at the top.
-- Keeps v1.3 recipe-card layout with no amount text boxes.
+## v1.5 changes
+
+- Renamed the main recipe area to Formula Builder.
+- Added a separate Lab Manual tab.
+- Added Lab Notes for observations and future tweaks.
+- Added an Experiment Log that records saved formulas.
+- Added a Pantry tab that shows which formulas are ready or missing ingredients.
+- Preserved the v1.4 ingredient calorie/protein display style.
+
+## Note
+
+Nutrition numbers should be updated once exact ingredient labels are locked in.
