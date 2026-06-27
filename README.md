@@ -1,27 +1,18 @@
-# Fluff Labs v2.1
+# Fluff Labs v2.2
 
 Science Never Tasted So Good.
 
-## What's new
+## Changes in v2.2
+- Removed Hypothesis from Formula Builder.
+- Ingredient amounts are now editable directly in the formula.
+- Calories and protein are editable too, so totals can be corrected when labels differ.
+- Amount, calorie, and protein edits automatically create Experiment Log entries.
+- Observations and Conclusion stay separate as manual notes after tasting.
 
-- Recipes are now Formulas.
-- Saved recipes are now Protocols.
-- Recipe notes are now Observations.
-- Pantry is now Inventory.
-- Mix-ins are now Additives.
-- Cook language has been replaced with Mix.
-- Experiment Log automatically records formula loads, additive changes, mixes, protocol saves, clones, and clears.
-- Protocols include Observations and Conclusions.
-
-## Files
-
-- index.html
-- styles.css
-- recipes.js
-- script.js
-
-
-## v2.1 changes
-- Replaced Mix with Start Experiment.
-- Replaced Save as Protocol with Promote to Protocol.
-- Protocols now represent formulas that have been tested and promoted, not merely saved.
+## Core flow
+1. New Formula
+2. Edit formula amounts/macros if needed
+3. Start Experiment
+4. Mix and taste
+5. Add Observations and Conclusion
+6. Promote to Protocol

@@ -17,7 +17,6 @@ const baseList = document.getElementById("baseList");
 const additiveList = document.getElementById("additiveList");
 const caloriesTotal = document.getElementById("caloriesTotal");
 const proteinTotal = document.getElementById("proteinTotal");
-const hypothesisText = document.getElementById("hypothesisText");
 const observationText = document.getElementById("observationText");
 const conclusionText = document.getElementById("conclusionText");
 const protocolList = document.getElementById("protocolList");
@@ -104,7 +103,6 @@ function readJson(key, fallback) {
 function loadFormula(formula, shouldLog = true) {
   currentBase = clone(RECIPES[formula].base);
   currentAdditives = clone(RECIPES[formula].mixins || []);
-  hypothesisText.value = "";
   observationText.value = "";
   conclusionText.value = "";
   renderAll();
@@ -131,11 +129,25 @@ function renderList(container, items, type) {
 
     row.innerHTML = `
       <div class="ingredient-title">${escapeHtml(item.name)}</div>
-      <div class="ingredient-bottom">
-        <div class="ingredient-meta">${escapeHtml(item.amount)}</div>
-        <div class="ingredient-nutrition">C:${Math.round(Number(item.calories || 0))} &nbsp; P:${Math.round(Number(item.protein || 0))}g</div>
+      <div class="edit-grid">
+        <label>
+          <span>Amount</span>
+          <input type="text" class="ingredient-input" data-field="amount" value="${escapeAttribute(item.amount || "")}" />
+        </label>
+        <label>
+          <span>Calories</span>
+          <input type="number" class="ingredient-input" data-field="calories" value="${Number(item.calories || 0)}" inputmode="decimal" />
+        </label>
+        <label>
+          <span>Protein</span>
+          <input type="number" class="ingredient-input" data-field="protein" value="${Number(item.protein || 0)}" inputmode="decimal" />
+        </label>
       </div>
     `;
+
+    row.querySelectorAll(".ingredient-input").forEach(input => {
+      input.addEventListener("change", () => updateIngredient(type, index, input.dataset.field, input.value));
+    });
 
     if (type === "additives") {
       const remove = document.createElement("button");
@@ -153,6 +165,23 @@ function renderList(container, items, type) {
 
     container.appendChild(row);
   });
+}
+
+function updateIngredient(type, index, field, value) {
+  const list = type === "base" ? currentBase : currentAdditives;
+  const item = list[index];
+  if (!item) return;
+
+  const oldValue = item[field];
+  const cleanValue = field === "amount" ? value.trim() : Number(value || 0);
+  if (String(oldValue) === String(cleanValue)) return;
+
+  item[field] = cleanValue;
+  updateTotals();
+
+  const fieldLabel = field === "protein" ? "protein" : field;
+  const suffix = field === "protein" ? "g" : "";
+  logExperiment(`Edited ${item.name}: ${fieldLabel} changed from ${oldValue}${suffix} to ${cleanValue}${suffix}.`);
 }
 
 function updateTotals() {
@@ -184,12 +213,10 @@ function addAdditive() {
 
 function startExperiment() {
   const totals = getTotals();
-  const hypothesis = hypothesisText.value.trim();
   const observation = observationText.value.trim();
   const conclusion = conclusionText.value.trim();
 
   let details = `Started experiment: ${flavorSelect.value}. Target result: ${totals.calories} calories, ${totals.protein}g protein.`;
-  if (hypothesis) details += ` Hypothesis: ${hypothesis}`;
   if (observation) details += ` Observation: ${observation}`;
   if (conclusion) details += ` Conclusion: ${conclusion}`;
 
@@ -206,7 +233,6 @@ function promoteProtocol() {
     formula: flavorSelect.value,
     calories: totals.calories,
     protein: totals.protein,
-    hypothesis: hypothesisText.value.trim(),
     observations: observationText.value.trim(),
     conclusion: conclusionText.value.trim(),
     ingredients: all.map(item => `${item.name} — ${item.amount}`),
@@ -387,6 +413,10 @@ function switchTab(target) {
   }
 }
 
+
+function escapeAttribute(value) {
+  return escapeHtml(value).replaceAll("`", "&#096;");
+}
 
 function escapeHtml(value) {
   return String(value)

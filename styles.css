@@ -379,3 +379,33 @@ summary {
 .hero {
   position: static;
 }
+
+/* v2.2 editable ingredient fields */
+.edit-grid {
+  display: grid;
+  grid-template-columns: 1.35fr .8fr .8fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.edit-grid label {
+  margin: 0;
+}
+
+.edit-grid span {
+  display: block;
+  color: var(--muted);
+  font-size: .78rem;
+  margin-bottom: 5px;
+}
+
+.ingredient-input {
+  padding: 10px;
+  border-radius: 12px;
+}
+
+@media (max-width: 520px) {
+  .edit-grid {
+    grid-template-columns: 1fr;
+  }
+}
