@@ -80,7 +80,6 @@ function home(){
       <p class="subtitle">Build, test, taste, and preserve the formulas worth repeating.</p>
     </section>
     <section class="home-grid">
-      ${activeCount ? action("Resume Experiments", `${activeCount} active experiment${activeCount===1?"":"s"}`, "experimentLog", true) ""}
       ${action("Formulas", "Browse the formula library", "formulas")}
       ${action("Protocols", `${state.protocols.length} preserved protocol${state.protocols.length===1?"":"s"}`, "protocols")}
       ${action("Lab Supplies", "Set your current products", "labSupplies")}
