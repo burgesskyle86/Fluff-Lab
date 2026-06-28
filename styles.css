@@ -6,3 +6,16 @@
 .hero-copy{width:100%;}
 .hero-art,.placeholder-art,.pill-row{display:none!important;}
 .button-row button#saveExperimentBtn{flex:1 1 220px;}
+.brand-mark {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+.brand-mark img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
