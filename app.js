@@ -307,7 +307,7 @@ function displayServing(product){return state.settings.measurement==="metric"?pr
 function displayAmount(product,multiplier){const base = displayServing(product); if(multiplier===1) return base; return `${prettyMultiplier(multiplier)} × ${base}`}
 function prettyMultiplier(n){ if(n===.125)return "1/8"; if(n===.25)return "1/4"; if(n===.33)return "1/3"; if(n===.5)return "1/2"; if(n===.67)return "2/3"; if(n===.75)return "3/4"; if(n===1.25)return "1¼"; if(n===1.5)return "1½"; return String(n)}
 function groupIngredients(f,exp){const groups={}; f.ingredients.forEach((it,index)=>{const g=it.group || FLUFF_DATA.genericIngredients[it.ingredient].category; if(!groups[g])groups[g]=[]; groups[g].push({...it,index});}); return groups}
-function groupLabel(g){return ({base:"Base",fruits:"Fruits",mixins:"Mix-ins",flavorings:"Flavorings"}[g] || g)}
+function groupLabel(g){return ({base:"Foundation",fruits:"Fruits",mixins:"Mix-ins",flavorings:"Flavorings"}[g] || g)}
 function flaskSvg(){return `<svg viewBox="0 0 64 64" role="img"><path class="flask-outline" d="M25 6h14M29 6v17L14 49c-2 4 1 9 6 9h24c5 0 8-5 6-9L35 23V6"/><path class="fluff" d="M20 47c5-5 8 3 13-2 5-4 8 1 12 2l3 6H17l3-6z"/><circle class="bubble" cx="27" cy="34" r="2.2"/><circle class="bubble" cx="38" cy="29" r="1.8"/></svg>`}
 function escapeHtml(value){return String(value ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
 function escapeAttribute(value){return escapeHtml(value).replaceAll("`","&#096;")}
