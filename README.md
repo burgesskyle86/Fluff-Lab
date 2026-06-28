@@ -1,18 +1,22 @@
-# Fluff Lab v3.1
+# Fluff Lab v3.1 Production
 
-Guided Experiment Mode release.
+Complete GitHub Pages build.
 
-## What's new
-- Full purple/lime brand assets included.
-- Formula list is alphabetical.
-- Clicking a formula only opens a preview. It does not save or start anything.
-- Formula preview shows ingredients without amounts.
-- Make This Formula starts a guided experiment.
-- Ingredient amounts are inside the guided steps.
-- Checkmarks track progress.
-- Save & Chill lets you come back later.
-- Resume Experiments opens unfinished experiments.
-- Experiment Notes and Conclusion are together.
+## Upload instructions
+1. Unzip this folder.
+2. Open the folder.
+3. Upload everything inside it to the existing `Fluff-Lab` GitHub repository.
+4. Allow GitHub to overwrite matching files.
+5. Commit as `Fluff Lab v3.1 Production`.
 
-## Upload to GitHub
-Upload everything in this folder to the same Fluff-Lab repository and let GitHub overwrite existing files.
+Do not upload the folder itself as a nested folder. The repo root should contain:
+
+- `index.html`
+- `styles.css`
+- `script.js`
+- `recipes.js`
+- `manifest.webmanifest`
+- `images/`
+- `icons/`
+- `README.md`
+- `CHANGELOG.md`
