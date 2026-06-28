@@ -1,0 +1,24 @@
+FLUFF LAB ICON PACK
+
+Upload these folders/files into your existing Fluff-Lab GitHub repo:
+
+icons/
+images/
+manifest.webmanifest
+
+Your index.html should already include:
+
+<link rel="icon" href="icons/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#7C4DFF">
+
+After committing:
+1. Open your GitHub Pages site in Safari with ?v=icon3 at the end.
+2. Delete the old Home Screen icon.
+3. Add the app back to Home Screen.
+
+Notes:
+- In-app logo files have transparent backgrounds.
+- Home Screen and PWA icons use a dark charcoal rounded-square background so they are visible on any wallpaper.
