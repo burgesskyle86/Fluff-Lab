@@ -3,179 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Fluff Lab v3.1 Production</title>
-  <link rel="icon" href="icons/favicon.ico" sizes="any">
-  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
-  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-  <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#7C4DFF">
+  <title>Fluff Lab v4.0</title>
+  <meta name="theme-color" content="#080a12" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/favicon.ico" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main class="app">
-    <header class="topbar">
-      <div class="brand-mark" aria-label="Fluff Lab logo">
-        <svg viewBox="0 0 120 120" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="flaskStroke" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#ffffff"/>
-              <stop offset="55%" stop-color="#ffffff"/>
-              <stop offset="100%" stop-color="#7C4DFF"/>
-            </linearGradient>
-            <linearGradient id="fluffFill" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#C8FF4D"/>
-              <stop offset="100%" stop-color="#A3E635"/>
-            </linearGradient>
-          </defs>
-          <circle cx="42" cy="14" r="8" fill="#A3E635"/>
-          <circle cx="66" cy="20" r="7" fill="#7C4DFF"/>
-          <circle cx="55" cy="33" r="5" fill="#B989FF"/>
-          <path d="M45 28h30" stroke="#ffffff" stroke-width="10" stroke-linecap="round"/>
-          <path d="M52 31v26L25 101c-3 6 1 13 8 13h54c7 0 11-7 8-13L68 57V31" fill="none" stroke="url(#flaskStroke)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M37 93c5-18 21-13 25-23 11 13 23 10 21 25-2 11-14 14-27 13-15-1-25-4-19-15Z" fill="url(#fluffFill)"/>
-          <path d="M43 93c14 8 27 3 35-5" fill="none" stroke="#0D1117" stroke-width="5" stroke-linecap="round"/>
-          <circle cx="60" cy="50" r="5" fill="#E6EAF1"/>
-          <circle cx="62" cy="69" r="5" fill="#B989FF"/>
-          <circle cx="55" cy="83" r="4" fill="#E6EAF1"/>
-        </svg>
-      </div>
-      <div class="brand-copy">
-        <h1>Fluff <span>Lab</span></h1>
-        <p>Science Never Tasted So Good.</p>
-      </div>
-      <span class="version">v3.1</span>
+  <div id="app" class="app-shell">
+    <header class="sticky-nav" id="stickyNav">
+      <button type="button" class="nav-button" id="backBtn">← Back</button>
+      <button type="button" class="lab-home" id="labBtn" aria-label="Go to Laboratory home">
+        <span class="flask-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img"><path class="flask-outline" d="M25 6h14M29 6v17L14 49c-2 4 1 9 6 9h24c5 0 8-5 6-9L35 23V6"/><path class="fluff" d="M20 47c5-5 8 3 13-2 5-4 8 1 12 2l3 6H17l3-6z"/><circle class="bubble" cx="27" cy="34" r="2.2"/><circle class="bubble" cx="38" cy="29" r="1.8"/></svg>
+        </span>
+        <span>Laboratory</span>
+      </button>
     </header>
 
-    <section id="home" class="screen active">
-      <section class="card home-card">
-        <p class="eyebrow">Laboratory Notebook</p>
-        <h2>Test. Taste. Perfect.</h2>
-        <div class="home-actions">
-          <button type="button" class="home-action primary" data-go="formulas">▶ Formulas</button>
-          <button type="button" class="home-action" data-go="active">🧊 Resume Experiments <span id="activeCount">(0)</span></button>
-          <button type="button" class="home-action" data-go="protocols">📚 Protocols <span id="protocolCount">(0)</span></button>
-          <button type="button" class="home-action" data-go="experiments">🔬 Experiment Log <span id="experimentCount">(0)</span></button>
-          <button type="button" class="home-action" data-go="inventory">📦 Inventory</button>
-          <button type="button" class="home-action" data-go="manual">📖 Lab Manual</button>
-        </div>
-      </section>
-    </section>
+    <main id="screen" class="screen"></main>
+  </div>
 
-    <section id="formulas" class="screen">
-      <button type="button" class="ghost back" data-go="home">← Home</button>
-      <section class="card">
-        <p class="eyebrow">A–Z Formula Library</p>
-        <h2>Choose a Formula</h2>
-        <p class="muted">Browsing formulas does not start or save an experiment.</p>
-        <div id="formulaList" class="list"></div>
-      </section>
-    </section>
-
-    <section id="formulaPreview" class="screen">
-      <button type="button" class="ghost back" data-go="formulas">← Formulas</button>
-      <section class="card hero-card">
-        <p class="eyebrow">Formula Preview</p>
-        <h2 id="previewTitle">Formula</h2>
-        <p id="previewDescription" class="muted"></p>
-        <div class="totals compact">
-          <div class="total-box"><strong id="previewCalories">0</strong><span>Calories</span></div>
-          <div class="total-box"><strong id="previewProtein">0g</strong><span>Protein</span></div>
-        </div>
-      </section>
-      <section class="card">
-        <h2>Ingredients</h2>
-        <p class="muted">No amounts here. Amounts appear inside the guided steps when you make it.</p>
-        <div id="previewIngredients" class="chip-list"></div>
-        <button type="button" id="makeFormulaBtn" class="primary wide">Make This Formula</button>
-      </section>
-    </section>
-
-    <section id="guided" class="screen">
-      <button type="button" class="ghost back" data-go="formulaPreview">← Preview</button>
-      <section class="card hero-card">
-        <p class="eyebrow">Guided Experiment</p>
-        <h2 id="guidedTitle">Formula</h2>
-        <p class="muted">Check off each step as you go. Save & Chill when it goes in the refrigerator.</p>
-      </section>
-      <section class="card">
-        <div id="stepList" class="step-list"></div>
-        <button type="button" id="saveChillBtn" class="primary wide">Save & Chill</button>
-      </section>
-    </section>
-
-    <section id="active" class="screen">
-      <button type="button" class="ghost back" data-go="home">← Home</button>
-      <section class="card">
-        <p class="eyebrow">Waiting to Taste</p>
-        <h2>Resume Experiments</h2>
-        <div id="activeList" class="list empty">No active experiments.</div>
-      </section>
-    </section>
-
-    <section id="finish" class="screen">
-      <button type="button" class="ghost back" data-go="active">← Resume Experiments</button>
-      <section class="card hero-card">
-        <p class="eyebrow">Finish Experiment</p>
-        <h2 id="finishTitle">Formula</h2>
-        <p class="muted">Taste it after chilling, then save the result.</p>
-      </section>
-      <section class="card">
-        <h2>Experiment Notes + Conclusion</h2>
-        <div class="rating-grid">
-          <label>Texture <input id="textureRating" type="range" min="1" max="5" value="4"></label>
-          <label>Sweetness <input id="sweetnessRating" type="range" min="1" max="5" value="4"></label>
-          <label>Flavor <input id="flavorRating" type="range" min="1" max="5" value="4"></label>
-          <label>Protein Satisfaction <input id="proteinRating" type="range" min="1" max="5" value="5"></label>
-        </div>
-        <label class="checkline"><input id="makeAgain" type="checkbox" checked> Would make again</label>
-        <label>Experiment Notes<textarea id="notesText" placeholder="Texture, flavor, chill time, additives, what changed..."></textarea></label>
-        <label>Conclusion<textarea id="conclusionText" placeholder="Final takeaway: what worked, what did not, and what to repeat next time."></textarea></label>
-        <button type="button" id="saveResultBtn" class="primary wide">Save Experiment</button>
-      </section>
-    </section>
-
-    <section id="protocols" class="screen">
-      <button type="button" class="ghost back" data-go="home">← Home</button>
-      <section class="card">
-        <div class="section-head"><h2>Protocols</h2><button id="clearProtocolsBtn" class="danger">Clear</button></div>
-        <div id="protocolList" class="list empty">No protocols saved yet.</div>
-      </section>
-    </section>
-
-    <section id="experiments" class="screen">
-      <button type="button" class="ghost back" data-go="home">← Home</button>
-      <section class="card">
-        <div class="section-head"><h2>Experiment Log</h2><button id="clearExperimentsBtn" class="danger">Clear</button></div>
-        <div id="experimentList" class="list empty">No experiments logged yet.</div>
-      </section>
-    </section>
-
-    <section id="inventory" class="screen">
-      <button type="button" class="ghost back" data-go="home">← Home</button>
-      <section class="card">
-        <h2>Inventory</h2>
-        <p class="muted">Check what you have on hand.</p>
-        <div id="inventoryList" class="inventory-list"></div>
-      </section>
-    </section>
-
-    <section id="manual" class="screen">
-      <button type="button" class="ghost back" data-go="home">← Home</button>
-      <section class="card manual-card">
-        <h2>Lab Manual</h2>
-        <h3>Formula Preview</h3>
-        <p>Use this to browse ingredients and macros. Nothing is saved here.</p>
-        <h3>Guided Experiment</h3>
-        <p>Tap Make This Formula to start. Amounts appear inside each step so the procedure is easier to follow.</p>
-        <h3>Save & Chill</h3>
-        <p>When the fluff goes into the refrigerator, save it. Come back later under Resume Experiments.</p>
-        <h3>Protocols</h3>
-        <p>If you would make it again, the completed experiment is saved as a protocol.</p>
-      </section>
-    </section>
-  </main>
-
-  <script src="recipes.js"></script>
-  <script src="script.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

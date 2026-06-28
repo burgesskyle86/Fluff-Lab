@@ -1,25 +1,16 @@
-# Fluff Lab v4.0 — The Laboratory Update
+# Install Instructions
 
-Science Never Tasted So Good.
+1. Download `fluff-lab-v4.0.zip`.
+2. Unzip the file.
+3. Open your GitHub repository.
+4. Upload the contents of the unzipped folder.
+5. Overwrite existing files.
+6. Commit changes using:
 
-This release turns Fluff Lab from a formula tracker into a laboratory-style experimentation app.
-
-## How to install on GitHub Pages
-
-1. Unzip `fluff-lab-v4.0.zip`.
-2. Open the unzipped `fluff-lab-v4.0` folder.
-3. Upload all files and folders into the existing Fluff-Lab GitHub repository.
-4. Let GitHub overwrite old files.
-5. Commit the changes.
-6. Wait for GitHub Pages to finish deploying.
-7. Open the app with a cache-buster such as `?v=4.0`.
-
-## Commit title
-
+Title:
 Fluff Lab v4.0 - The Laboratory Update
 
-## Commit description
-
+Description:
 Major update introducing the Laboratory foundation.
 
 Added:
@@ -46,3 +37,6 @@ Improved:
 - Formula preview clarity
 - Inventory structure, now called Lab Supplies
 - Laboratory branding and terminology
+
+7. Wait for GitHub Pages to deploy.
+8. Open the app with `?v=4.0` at the end of the URL.
