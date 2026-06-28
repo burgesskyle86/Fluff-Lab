@@ -1,13 +1,14 @@
 {
   "name": "Fluff Lab",
   "short_name": "Fluff Lab",
-  "description": "Protein fluff recipes and experiments.",
-  "start_url": ".",
+  "description": "Protein fluff formulas, protocols, and experiments.",
+  "start_url": "./",
   "display": "standalone",
-  "background_color": "#0D1117",
+  "background_color": "#05070D",
   "theme_color": "#7C4DFF",
   "icons": [
     { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/maskable-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }
