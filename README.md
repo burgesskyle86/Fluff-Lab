@@ -1,24 +1,18 @@
-# Fluff Labs v2.3
+# Fluff Lab v3.1
 
-Science Never Tasted So Good.
+Guided Experiment Mode release.
 
-## Changes in v2.3
-- Removed Hypothesis from Formula Builder.
-- Ingredient amounts are now editable directly in the formula.
-- Calories and protein are editable too, so totals can be corrected when labels differ.
-- Amount, calorie, and protein edits automatically create Experiment Log entries.
-- Observations and Conclusion stay separate as manual notes after tasting.
+## What's new
+- Full purple/lime brand assets included.
+- Formula list is alphabetical.
+- Clicking a formula only opens a preview. It does not save or start anything.
+- Formula preview shows ingredients without amounts.
+- Make This Formula starts a guided experiment.
+- Ingredient amounts are inside the guided steps.
+- Checkmarks track progress.
+- Save & Chill lets you come back later.
+- Resume Experiments opens unfinished experiments.
+- Experiment Notes and Conclusion are together.
 
-## Core flow
-1. New Formula
-2. Edit formula amounts/macros if needed
-3. Start Experiment
-4. Mix and taste
-5. Add Observations and Conclusion
-6. Promote to Protocol
-
-
-## v2.3
-- Added amount dropdowns for ingredients.
-- Calories and protein now scale automatically when an amount preset is selected.
-- Custom amount remains available for odd measurements or label-specific entries.
+## Upload to GitHub
+Upload everything in this folder to the same Fluff-Lab repository and let GitHub overwrite existing files.
