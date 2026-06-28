@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 180" role="img" aria-label="Fluff Lab logo">
+  <defs><linearGradient id="word" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#7C4DFF"/><stop offset="100%" stop-color="#A277FF"/></linearGradient></defs>
+  <svg x="0" y="22" width="136" height="136" viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="stroke" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="58%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#7C4DFF"/>
+    </linearGradient>
+    <linearGradient id="fluff" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#c8ff41"/>
+      <stop offset="100%" stop-color="#A3E635"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#glow)">
+    <circle cx="42" cy="14" r="8" fill="#A3E635"/>
+    <circle cx="62" cy="20" r="7" fill="#7C4DFF"/>
+    <circle cx="53" cy="31" r="5" fill="#7C4DFF"/>
+    <path d="M46 35 V47 L23 91 C18 101 25 111 37 111 H83 C95 111 102 101 97 91 L74 47 V35" fill="none" stroke="url(#stroke)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M42 35 H78" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+    <path d="M33 89 C38 75 50 76 54 83 C58 72 75 75 76 88 C80 88 84 91 83 96 C82 102 75 104 67 101 C58 107 45 104 42 98 C37 101 30 100 28 95 C27 92 29 90 33 89Z" fill="url(#fluff)"/>
+    <path d="M55 90 C63 96 73 94 78 86" fill="none" stroke="#0D1117" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="59" cy="52" r="4" fill="#E6EAF1"/>
+    <circle cx="58" cy="69" r="5" fill="#C59CFF"/>
+  </g>
+</svg>
+  <text x="158" y="96" font-family="Poppins, Inter, Arial, sans-serif" font-size="74" font-weight="800" fill="#E6EAF1">Fluff</text>
+  <text x="402" y="96" font-family="Poppins, Inter, Arial, sans-serif" font-size="74" font-weight="800" fill="url(#word)">Lab</text>
+  <text x="162" y="134" font-family="Poppins, Inter, Arial, sans-serif" font-size="22" font-weight="800" letter-spacing="4" fill="#A3E635">SCIENCE NEVER TASTED SO GOOD.</text>
+</svg>
