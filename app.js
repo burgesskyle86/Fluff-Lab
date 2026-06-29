@@ -76,8 +76,6 @@ function home(){
         </div>
         <span class="version">v${FLUFF_DATA.version}</span>
       </div>
-      <div class="alive">It's Alive!</div>
-      <p class="subtitle">Build, test, taste, and preserve the formulas worth repeating.</p>
     </section>
     <section class="home-grid">
       ${action("Formulas", "Browse the formula library", "formulas")}
