@@ -1,3 +1,4 @@
+const hasOpenedLabManual = localStorage.getItem("fluffLab_hasOpenedLabManual") === "true";
 const KEYS = {
   active: "fluffLabV31ActiveExperiments",
   completed: "fluffLabV31CompletedExperiments",
@@ -27,10 +28,19 @@ function start(){
   renderAll();
 }
 
+const labManualLabel = hasOpenedLabManual
+  ? "Lab Manual"
+  : "Start Here: Lab Manual";
+
 function go(id){
   screens.forEach(s => s.classList.remove("active"));
   const screen = document.getElementById(id);
   if(screen) screen.classList.add("active");
+  
+  if(id === "manual"){
+    localStorage.setItem("fluffLab_hasOpenedLabManual", "true");
+  }
+  
   if(id === "formulas") renderFormulaList();
   if(id === "active") renderActive();
   if(id === "protocols") renderProtocols();
