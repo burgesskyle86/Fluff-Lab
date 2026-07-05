@@ -296,7 +296,32 @@ function settings(){
   </section>`;
   document.querySelectorAll("[data-measure]").forEach(b=>b.addEventListener("click",()=>{state.settings.measurement=b.dataset.measure;save();render();}));
 }
-function manual(){screen.innerHTML=`<section class="card"><h2>Lab Manual</h2><div class="grid" style="margin-top:12px"><div class="soft-card"><strong>Formula</strong><p class="subtitle">A starting idea. Formulas use generic ingredients and do not contain brands.</p></div><div class="soft-card"><strong>Experiment</strong><p class="subtitle">A specific test using your current Lab Supplies and chosen amounts.</p></div><div class="soft-card"><strong>Protocol</strong><p class="subtitle">A successful experiment preserved by the user and named by the user.</p></div><div class="soft-card"><strong>Lab Supplies</strong><p class="subtitle">Your current products. One active product supports each generic ingredient.</p></div></div></section>`}
+function manual(){
+  screen.innerHTML=`
+    <section class="card">
+      <h2>Lab Manual</h2>
+      <p>Start here if you're new to Fluff Lab!</p>
+    </section>
+    
+    <section class="card">
+      <h3>How Fluff Lab Works</h3>
+      <p>Start with a Formula, make it as an Experiment, then save the best version as Protocols.</p>
+    </section>
+
+    <section class="card">
+      <h3>Core Terms</h3>
+      <p><b>Formula:</b> A starting recipe idea.</p>
+      <p><b>Experiment:</b> The version you are making right now.</p>
+      <p><b>Protocol:</b> A saved version you want to repeat.</p>
+    </section>
+
+    <section class="card">
+      <h3>Measurements</h3>
+      <p>Fluff Lab shows cooking measurments like cups, tablespoons, teaspoons, scoops, cookies, and crackers. You can switch to metric if you prefer grams.</p>
+      <p>The app handles nutrition math behind the scenes.</p>
+    </section>
+  `;
+}
 
 function getFormula(id){return FLUFF_DATA.formulas.find(f=>f.id===id) || FLUFF_DATA.formulas[0]}
 function getExperiment(id){return state.experiments.find(e=>e.id===id)}
