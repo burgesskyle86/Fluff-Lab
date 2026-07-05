@@ -10,7 +10,7 @@ let state = {
   history:[],
   selectedFormulaId:null,
   activeExperimentId:null,
-  settings:{ measurement:"kitchen" },
+  settings:{ measurement:"kitchen" ,labManualOpened:false},
   supplies:{...FLUFF_DATA.defaultSupplies},
   experiments:[],
   protocols:[]
@@ -42,6 +42,11 @@ function save(){
 function readJson(key,fallback){ try{return JSON.parse(localStorage.getItem(key)) || fallback}catch{return fallback} }
 
 function navigate(view, params={}, push=true){
+  if(view === "manual"){
+    state.settings.labManualOpened = true;
+    save();
+  }
+
   if(push) state.history.push({view:state.view, selectedFormulaId:state.selectedFormulaId, activeExperimentId:state.activeExperimentId});
   state.view = view;
   if(params.formulaId !== undefined) state.selectedFormulaId = params.formulaId;
@@ -58,12 +63,15 @@ function goBack(){
 
 function render(){
   backBtn.style.visibility = state.view === "home" ? "hidden" : "visible";
-  const map = {home, formulas, formulaPreview, experiment, finishExperiment, protocols, protocolDetail, labSupplies, experimentLog, settings, manual};
+  const map = {home, formulas, formulaPreview, experiment, finishExperiment, protocols, protocolDetail, labSupplies, experimentLog, settings, labManual};
   (map[state.view] || home)();
 }
 
 function home(){
   const activeCount = state.experiments.filter(e=>e.status !== "complete").length;
+  const labManualLabel = state.settings.labManualOpened
+    ? "Lab Manual"
+    : "Start Here: Lab Manual";
   screen.innerHTML = `
     <section class="hero">
       <div class="brand-row">
@@ -74,7 +82,6 @@ function home(){
             <p class="tagline">Science Never Tasted So Good.</p>
           </div>
         </div>
-        <span class="version">v${FLUFF_DATA.version}</span>
       </div>
     </section>
     <section class="home-grid">
@@ -83,7 +90,7 @@ function home(){
       ${action("Lab Supplies", "Set your current products", "labSupplies")}
       ${action("Experiment Log", "Review active and completed experiments", "experimentLog")}
       ${action("Settings", "Measurement system and app details", "settings")}
-      ${action("Lab Manual", "How Fluff Lab works", "manual")}
+      ${action(labManualLabel, "How Fluff Lab works", "manual")}
     </section>`;
   bindActions();
 }
@@ -289,7 +296,7 @@ function settings(){
   </section>`;
   document.querySelectorAll("[data-measure]").forEach(b=>b.addEventListener("click",()=>{state.settings.measurement=b.dataset.measure;save();render();}));
 }
-function manual(){screen.innerHTML=`<section class="card"><h2>Lab Manual</h2><div class="grid" style="margin-top:12px"><div class="soft-card"><strong>Formula</strong><p class="subtitle">A starting idea. Formulas use generic ingredients and do not contain brands.</p></div><div class="soft-card"><strong>Experiment</strong><p class="subtitle">A specific test using your current Lab Supplies and chosen amounts.</p></div><div class="soft-card"><strong>Protocol</strong><p class="subtitle">A successful experiment preserved by the user and named by the user.</p></div><div class="soft-card"><strong>Lab Supplies</strong><p class="subtitle">Your current products. One active product supports each generic ingredient.</p></div></div></section>`}
+function labManual(){screen.innerHTML=`<section class="card"><h2>Lab Manual</h2><div class="grid" style="margin-top:12px"><div class="soft-card"><strong>Formula</strong><p class="subtitle">A starting idea. Formulas use generic ingredients and do not contain brands.</p></div><div class="soft-card"><strong>Experiment</strong><p class="subtitle">A specific test using your current Lab Supplies and chosen amounts.</p></div><div class="soft-card"><strong>Protocol</strong><p class="subtitle">A successful experiment preserved by the user and named by the user.</p></div><div class="soft-card"><strong>Lab Supplies</strong><p class="subtitle">Your current products. One active product supports each generic ingredient.</p></div></div></section>`}
 
 function getFormula(id){return FLUFF_DATA.formulas.find(f=>f.id===id) || FLUFF_DATA.formulas[0]}
 function getExperiment(id){return state.experiments.find(e=>e.id===id)}

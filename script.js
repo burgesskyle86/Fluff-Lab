@@ -37,7 +37,7 @@ function go(id){
   const screen = document.getElementById(id);
   if(screen) screen.classList.add("active");
   
-  if(id === "manual"){
+  if(id === "labManual"){
     localStorage.setItem("fluffLab_hasOpenedLabManual", "true");
   }
   
