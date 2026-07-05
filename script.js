@@ -46,6 +46,7 @@ function go(id){
   if(id === "protocols") renderProtocols();
   if(id === "experiments") renderExperiments();
   if(id === "inventory") renderInventory();
+  if(id === "labManual") renderLabManual();
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
