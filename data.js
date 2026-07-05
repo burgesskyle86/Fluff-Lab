@@ -185,17 +185,17 @@ const FLUFF_DATA = {
   formulas: [
     {
       id:"banana_cream_pie", name:"Banana Cream Pie", description:"A banana pudding-style fluff with a creamy pie profile.", inspiredBy:null,
-      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"), amt("vanilla_whey",1,[0.25,.5,0.75,1,1.25,1.5,1.75,2],"base"), amt("banana_pudding",1,[.5,1,1.5,2],"base"), amt("whipped_topping",2,[0.5,1,2,4],"base"), amt("acacia_fiber",1,[.5,1,2],"base"), amt("banana",1,[.5,1,1.5,2],"fruits")],
+      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"), amt("vanilla_whey",1,[0.25,0.5,0.75,1,1.25,1.5,1.75,2],"base"), amt("banana_pudding",1,[.5,1,1.5,2],"base"), amt("whipped_topping",2,[0.5,1,2,4],"base"), amt("acacia_fiber",1,[.5,1,2],"base"), amt("banana",1,[.5,1,1.5,2],"fruits")],
       procedure:["Add yogurt to the mixing bowl.","Add whey, pudding mix, whipped topping, and acacia fiber.","Mix until smooth and slightly fluffy.","Fold in banana.","Refrigerate at least 15–30 minutes."]
     },
     {
       id:"birthday_cake", name:"Birthday Cake", description:"Vanilla-forward fluff with a sweet celebration profile.", inspiredBy:null,
-      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("vanilla_whey",1,[0.25,.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("vanilla_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base"),amt("vanilla_extract",.5,[.25,.5,1],"flavorings")],
+      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("vanilla_whey",1,[0.25,0.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("vanilla_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base"),amt("vanilla_extract",.5,[.25,.5,1],"flavorings")],
       procedure:["Add yogurt to the mixing bowl.","Add whey, pudding mix, whipped topping, and acacia fiber.","Mix until smooth.","Add vanilla extract and fold gently.","Refrigerate at least 15–30 minutes."]
     },
     {
       id:"blueberry_cheesecake", name:"Blueberry Cheesecake", description:"Cheesecake fluff with blueberries for a bright dessert flavor.", inspiredBy:null,
-      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("vanilla_whey",1,[0.25,.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("cheesecake_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base"),amt("blueberries",1,[.5,1,1.5,2],"fruits")],
+      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("vanilla_whey",1,[0.25,0.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("cheesecake_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base"),amt("blueberries",1,[.5,1,1.5,2],"fruits")],
       procedure:["Add yogurt to the mixing bowl.","Add whey, cheesecake pudding, whipped topping, and acacia fiber.","Mix until smooth and thick.","Fold in blueberries.","Refrigerate at least 15–30 minutes."]
     },
     {
@@ -205,12 +205,12 @@ const FLUFF_DATA = {
     },
     {
       id:"cookies_and_cream", name:"Cookies & Cream", description:"Vanilla cream base with a thin chocolate sandwich cookie finish.", inspiredBy:null,
-      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("vanilla_whey",1,[0.25,.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("vanilla_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base"),amt("thin_chocolate_cookie",2,[1,2,4],"mixins")],
+      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("vanilla_whey",1,[0.25,0.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("vanilla_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base"),amt("thin_chocolate_cookie",2,[1,2,4],"mixins")],
       procedure:["Add yogurt to the mixing bowl.","Add vanilla whey, vanilla pudding, whipped topping, and acacia fiber.","Mix until smooth.","Fold in thin chocolate sandwich cookies last.","Refrigerate at least 15–30 minutes."]
     },
     {
       id:"key_lime_pie", name:"Key Lime Pie", description:"Cheesecake-style fluff with key lime and crust flavor.", inspiredBy:null,
-      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("vanilla_whey",1,[0.25,.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("cheesecake_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base"),amt("key_lime_juice",1,[.5,1,1.5],"flavorings"),amt("graham_cracker",4,[1,2,3,4,5,6,7,8],"mixins")],
+      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("vanilla_whey",1,[0.25,0.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("cheesecake_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base"),amt("key_lime_juice",1,[.5,1,1.5],"flavorings"),amt("graham_cracker",4,[1,2,3,4,5,6,7,8],"mixins")],
       procedure:["Add yogurt to the mixing bowl.","Add whey, cheesecake pudding, whipped topping, and acacia fiber.","Mix until smooth.","Fold in key lime juice.","Add graham cracker near the end.","Refrigerate at least 15–30 minutes."]
     },
     {
@@ -220,17 +220,17 @@ const FLUFF_DATA = {
     },
     {
       id:"peanut_butter_cup", name:"Peanut Butter Cup", description:"Chocolate base ready for peanut butter style experiments.", inspiredBy:null,
-      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("chocolate_whey",1,[0.25,.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("chocolate_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base")],
+      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("chocolate_whey",1,[0.25,0.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("chocolate_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base")],
       procedure:["Add yogurt to the mixing bowl.","Add chocolate whey, chocolate pudding, whipped topping, and acacia fiber.","Mix until smooth and thick.","Add your peanut butter-style mix-in if desired.","Refrigerate at least 15–30 minutes."]
     },
     {
       id:"strawberry_cheesecake", name:"Strawberry Cheesecake", description:"Cheesecake fluff with strawberry folded in.", inspiredBy:null,
-      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("vanilla_whey",1,[0.25,.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("cheesecake_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base"),amt("strawberries",1,[.5,1,1.5],"fruits")],
+      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("vanilla_whey",1,[0.25,0.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("cheesecake_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base"),amt("strawberries",1,[.5,1,1.5],"fruits")],
       procedure:["Add yogurt to the mixing bowl.","Add whey, cheesecake pudding, whipped topping, and acacia fiber.","Mix until smooth and thick.","Fold in strawberries.","Refrigerate at least 15–30 minutes."]
     },
     {
       id:"vanilla_bean", name:"Vanilla Bean", description:"Simple vanilla fluff that works as a base for experiments.", inspiredBy:null,
-      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("vanilla_whey",1,[0.25,.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("vanilla_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base"),amt("vanilla_extract",.5,[.25,.5,1],"flavorings")],
+      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("vanilla_whey",1,[0.25,0.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("vanilla_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base"),amt("vanilla_extract",.5,[.25,.5,1],"flavorings")],
       procedure:["Add yogurt to the mixing bowl.","Add vanilla whey, vanilla pudding, whipped topping, and acacia fiber.","Mix until smooth.","Add vanilla extract and fold gently.","Refrigerate at least 15–30 minutes."]
     }
   ].sort((a,b)=>a.name.localeCompare(b.name))
