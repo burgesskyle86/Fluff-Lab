@@ -24,7 +24,11 @@ function start(){
   load();
   backBtn.addEventListener("click", goBack);
   labBtn.addEventListener("click", () => navigate("home", {}, false));
-  render();
+  if(!state.settings.labManualOpened){
+    navigate("manual", {}, false);
+  } else {
+    render();
+  }
 }
 
 function load(){
