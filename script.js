@@ -28,19 +28,10 @@ function start(){
   renderAll();
 }
 
-const labManualLabel = hasOpenedLabManual
-  ? "Lab Manual"
-  : "Start Here: Lab Manual";
-
 function go(id){
   screens.forEach(s => s.classList.remove("active"));
   const screen = document.getElementById(id);
   if(screen) screen.classList.add("active");
-  
-  if(id === "labManual"){
-    localStorage.setItem("fluffLab_hasOpenedLabManual", "true");
-  }
-  
   if(id === "formulas") renderFormulaList();
   if(id === "active") renderActive();
   if(id === "protocols") renderProtocols();
