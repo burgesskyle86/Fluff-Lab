@@ -94,7 +94,7 @@ const FLUFF_DATA = {
     thin_chocolate_cookie: { id:"thin_chocolate_cookie", name:"Thin Chocolate Sandwich Cookie", category:"mixins", purpose:"Crunch and chocolate cookie flavor.", effects:["Crunch", "Dessert flavor", "Softens after chilling"], bestRange:"1 to 3 cookies" },
     graham_cracker: { id:"graham_cracker", name:"Graham Cracker", category:"mixins", purpose:"Pie crust flavor and crunch.", effects:["Crust flavor", "Crunch", "Softens into cheesecake-like texture"], bestRange:"1/2 to 1 sheet" },
     lemon_juice: { id:"lemon_juice", name:"Lemon Juice", category:"flavorings", purpose:"Bright citrus flavor.", effects:["Tartness", "Freshness", "Cuts sweetness"], bestRange:"1 tsp to 1 tbsp" },
-    key_lime_juice: { id:"key_lime_juice", name:"Key Lime Juice", category:"flavorings", purpose:"Key lime tartness.", effects:["Tart citrus", "Pie flavor", "Fresh finish"], bestRange:"1 tsp to 1 tbsp" },
+    key_lime_juice: { id:"key_lime_juice", name:"Nellie & Joe's Key West Lime Juice", category:"flavorings", purpose:"Key lime tartness.", effects:["Tart citrus", "Pie flavor", "Fresh finish"], bestRange:"1 tsp to 1 tbsp" },
     vanilla_extract: { id:"vanilla_extract", name:"Vanilla Extract", category:"flavorings", purpose:"Rounds out sweetness and dessert flavor.", effects:["Warmer vanilla flavor", "Better sweetness perception"], bestRange:"1/4 to 1/2 tsp" }
   },
   products: {
@@ -159,7 +159,7 @@ const FLUFF_DATA = {
     oreo_thins: { id:"oreo_thins", ingredient:"thin_chocolate_cookie", brand:"Oreo", name:"Oreo Thins", serving:{ kitchen:"3 cookies", metric:"29 g", calories:130, protein:1, carbs:18, fat:6, fiber:1 }, notes:"Optional product for thin chocolate sandwich cookie." },
     honeymaid_graham: { id:"honeymaid_graham", ingredient:"graham_cracker", brand:"Honey Maid", name:"Honey Maid Graham Crackers", serving:{ kitchen:"4 squares", metric:"31 g", calories:130, protein:2, carbs:24, fat:3, fiber:1 }, notes:"Optional crust-style mix-in." },
     santa_cruz_lemon: { id:"santa_cruz_lemon", ingredient:"lemon_juice", brand:"Santa Cruz", name:"Santa Cruz Organic Lemon Juice", serving:{ kitchen:"1 tbsp", metric:"15 mL", calories:0, protein:0, carbs:0, fat:0, fiber:0 }, notes:"Lemon flavoring." },
-    key_west_lime: { id:"key_west_lime", ingredient:"key_lime_juice", brand:"Nellie & Joe's", name:"Key West Lime Juice", serving:{ kitchen:"1 tbsp", metric:"15 mL", calories:0, protein:0, carbs:0, fat:0, fiber:0 }, notes:"Key lime flavoring." },
+    key_west_lime: { id:"key_west_lime", ingredient:"key_lime_juice", brand:"Nellie & Joe's", name:"Nellie & Joe's Key West Lime Juice", serving:{ kitchen:"1 tbsp", metric:"15 mL", calories:0, protein:0, carbs:0, fat:0, fiber:0 }, notes:"Key lime flavoring." },
     generic_vanilla_extract: { id:"generic_vanilla_extract", ingredient:"vanilla_extract", brand:"Generic", name:"Vanilla Extract", serving:{ kitchen:"1 tsp", metric:"5 mL", calories:12, protein:0, carbs:0.5, fat:0, fiber:0 }, notes:"Rounds out dessert flavor." }
   },
   defaultSupplies: {
