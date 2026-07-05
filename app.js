@@ -63,7 +63,7 @@ function goBack(){
 
 function render(){
   backBtn.style.visibility = state.view === "home" ? "hidden" : "visible";
-  const map = {home, formulas, formulaPreview, experiment, finishExperiment, protocols, protocolDetail, labSupplies, experimentLog, settings, labManual};
+  const map = {home, formulas, formulaPreview, experiment, finishExperiment, protocols, protocolDetail, labSupplies, experimentLog, settings, manual};
   (map[state.view] || home)();
 }
 
@@ -296,7 +296,7 @@ function settings(){
   </section>`;
   document.querySelectorAll("[data-measure]").forEach(b=>b.addEventListener("click",()=>{state.settings.measurement=b.dataset.measure;save();render();}));
 }
-function labManual(){screen.innerHTML=`<section class="card"><h2>Lab Manual</h2><div class="grid" style="margin-top:12px"><div class="soft-card"><strong>Formula</strong><p class="subtitle">A starting idea. Formulas use generic ingredients and do not contain brands.</p></div><div class="soft-card"><strong>Experiment</strong><p class="subtitle">A specific test using your current Lab Supplies and chosen amounts.</p></div><div class="soft-card"><strong>Protocol</strong><p class="subtitle">A successful experiment preserved by the user and named by the user.</p></div><div class="soft-card"><strong>Lab Supplies</strong><p class="subtitle">Your current products. One active product supports each generic ingredient.</p></div></div></section>`}
+function manual(){screen.innerHTML=`<section class="card"><h2>Lab Manual</h2><div class="grid" style="margin-top:12px"><div class="soft-card"><strong>Formula</strong><p class="subtitle">A starting idea. Formulas use generic ingredients and do not contain brands.</p></div><div class="soft-card"><strong>Experiment</strong><p class="subtitle">A specific test using your current Lab Supplies and chosen amounts.</p></div><div class="soft-card"><strong>Protocol</strong><p class="subtitle">A successful experiment preserved by the user and named by the user.</p></div><div class="soft-card"><strong>Lab Supplies</strong><p class="subtitle">Your current products. One active product supports each generic ingredient.</p></div></div></section>`}
 
 function getFormula(id){return FLUFF_DATA.formulas.find(f=>f.id===id) || FLUFF_DATA.formulas[0]}
 function getExperiment(id){return state.experiments.find(e=>e.id===id)}
