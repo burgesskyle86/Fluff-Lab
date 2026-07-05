@@ -317,7 +317,8 @@ function manual(){
 
     <section class="card">
       <h3>Measurements</h3>
-      <p>Fluff Lab shows cooking measurments like cups, tablespoons, teaspoons, scoops, cookies, and crackers. You can switch to metric if you prefer grams.</p>
+      <p>Fluff Lab shows cooking measurments like cups, tablespoons, teaspoons, scoops, cookies, and crackers.</p>
+      <p>You can switch to metric if you prefer grams.</p>
       <p>The app handles nutrition math behind the scenes.</p>
     </section>
   `;
