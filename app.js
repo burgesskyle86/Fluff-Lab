@@ -338,7 +338,69 @@ function blankTotals(){return {calories:0,protein:0,carbs:0,fat:0,fiber:0}}
 function addTotals(t,x){t.calories+=x.calories;t.protein=round(t.protein+x.protein);t.carbs=round(t.carbs+x.carbs);t.fat=round(t.fat+x.fat);t.fiber=round(t.fiber+x.fiber);return t}
 function round(n){return Math.round(n*10)/10}
 function displayServing(product){return state.settings.measurement==="metric"?product.serving.metric:product.serving.kitchen}
-function displayAmount(product,multiplier){const base = displayServing(product); if(multiplier===1) return base; return `${prettyMultiplier(multiplier)} × ${base}`}
+function displayAmount(product, multiplier) {
+  const base = displayServing(product);
+
+  if (multiplier === 1) return base;
+
+  const parts = base.split(" ");
+  const servingAmountText = parts[0];
+  const unit = parts.slice(1).join(" ");
+
+  const servingAmountNumber = fractionToNumber(servingAmountText);
+
+  if (!servingAmountNumber) {
+    return `${prettyMultiplier(multiplier)} × ${base}`;
+  }
+
+  const finalAmount = servingAmountNumber * multiplier;
+  const finalUnit = finalAmount === 1 ? singularUnit(unit) : pluralUnit(unit);
+
+  return `${prettyMultiplier(finalAmount)} ${finalUnit}`;
+}
+function fractionToNumber(value) {
+  if (value.includes("/")) {
+    const parts = value.split("/");
+    const top = Number(parts[0]);
+    const bottom = Number(parts[1]);
+
+    if (!bottom) return null;
+
+    return top / bottom;
+  }
+
+  return Number(value);
+}
+
+function pluralUnit(unit) {
+  const units = {
+    scoop: "scoops",
+    scoops: "scoops",
+    cracker: "crackers",
+    crackers: "crackers",
+    cookie: "cookies",
+    cookies: "cookies",
+    package: "package",
+    cup: "cup",
+    tbsp: "tbsp",
+    tsp: "tsp",
+    g: "g",
+    mL: "mL",
+    ml: "mL"
+  };
+
+  return units[unit] || unit;
+}
+
+function singularUnit(unit) {
+  const units = {
+    scoops: "scoop",
+    crackers: "cracker",
+    cookies: "cookie"
+  };
+
+  return units[unit] || unit;
+}
 function prettyMultiplier(n){ if(n===.125)return "1/8"; if(n===.25)return "1/4"; if(n===.33)return "1/3"; if(n===.5)return "1/2"; if(n===.67)return "2/3"; if(n===.75)return "3/4"; if(n===1.25)return "1¼"; if(n===1.5)return "1½"; return String(n)}
 function groupIngredients(f,exp){const groups={}; f.ingredients.forEach((it,index)=>{const g=it.group || FLUFF_DATA.genericIngredients[it.ingredient].category; if(!groups[g])groups[g]=[]; groups[g].push({...it,index});}); return groups}
 function groupLabel(g){return ({base:"Foundation",fruits:"Fruits",mixins:"Mix-ins",flavorings:"Flavorings"}[g] || g)}
