@@ -374,14 +374,13 @@ function fractionToNumber(value) {
 
 function pluralUnit(unit) {
   const units = {
-    scoop: "scoop",
+    scoop: "scoops",
     scoops: "scoops",
-    cracker: "cracker",
+    cracker: "crackers",
     crackers: "crackers",
-    cookie: "cookie",
+    cookie: "cookies",
     cookies: "cookies",
-    package: "package",
-    cup: "cup",
+    cup: "cups",
     cups: "cups",
     tbsp: "tbsp",
     tsp: "tsp",
@@ -395,10 +394,19 @@ function pluralUnit(unit) {
 
 function singularUnit(unit) {
   const units = {
+    scoop: "scoop",
     scoops: "scoop",
+    cracker: "cracker",
     crackers: "cracker",
-    cookies: "cookie"
-    cups: "cup"
+    cookie: "cookie",
+    cookies: "cookie",
+    cup: "cup",
+    cups: "cup",
+    tbsp: "tbsp",
+    tsp: "tsp",
+    g: "g",
+    mL: "mL",
+    ml: "mL"
   };
 
   return units[unit] || unit;
