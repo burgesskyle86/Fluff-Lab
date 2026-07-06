@@ -4,7 +4,7 @@ const FLUFF_DATA = {
   categories: {
     base: "Base",
     fruits: "Fruits",
-    mixins: "Mix-ins",
+    additive: "Additives",
     flavorings: "Flavorings"
   },
   genericIngredients: {
@@ -14,7 +14,7 @@ const FLUFF_DATA = {
       category: "base",
       purpose: "Primary creamy base and protein source.",
       effects: ["Adds creaminess", "Adds tang", "Boosts protein"],
-      bestRange: "1/2 cup to 2 cup"
+      bestRange: "1 to 2 cup"
     },
     vanilla_whey: {
       id: "vanilla_whey",
@@ -22,7 +22,7 @@ const FLUFF_DATA = {
       category: "base",
       purpose: "Protein booster and vanilla flavor base.",
       effects: ["Adds protein", "Adds sweetness", "Can thicken when mixed with pudding"],
-      bestRange: "1/4 to 2 scoop"
+      bestRange: "1 to 2 scoop"
     },
     chocolate_whey: {
       id: "chocolate_whey",
@@ -30,12 +30,12 @@ const FLUFF_DATA = {
       category: "base",
       purpose: "Protein booster and chocolate flavor base.",
       effects: ["Adds protein", "Adds chocolate flavor", "Can make dessert flavors richer"],
-      bestRange: "1/4 to 2 scoop"
+      bestRange: "1 to 2 scoop"
     },
     whipped_topping: {
       id: "whipped_topping",
       name: "Zero Sugar Whipped Topping",
-      category: "base",
+      category: "additive",
       purpose: "Adds air, volume, and a lighter mouthfeel.",
       effects: ["Creamier", "Fluffier", "More volume"],
       bestRange: "1 to 2 tbsp"
@@ -43,7 +43,7 @@ const FLUFF_DATA = {
     acacia_fiber: {
       id: "acacia_fiber",
       name: "Acacia Fiber",
-      category: "base",
+      category: "additive",
       purpose: "Thickener, stabilizer, and fiber source.",
       effects: ["Thicker texture", "Better stability", "Can become gummy if overused"],
       bestRange: "1/2 tsp to 2 tsp"
@@ -88,11 +88,11 @@ const FLUFF_DATA = {
       effects: ["Banana flavor", "Sweeter", "Dessert pie profile"],
       bestRange: "1/2 to 2 tbsp"
     },
-    strawberries: { id:"strawberries", name:"Strawberries", category:"fruits", purpose:"Fruit flavor and volume.", effects:["Fresh fruit flavor", "More moisture", "Pairs well with cheesecake"], bestRange:"1/4 to 1/2 cup" },
-    blueberries: { id:"blueberries", name:"Blueberries", category:"fruits", purpose:"Fruit flavor and color.", effects:["Berry flavor", "Softer texture after chilling", "Pairs well with vanilla"], bestRange:"1/4 to 1/2 cup" },
-    banana: { id:"banana", name:"Banana", category:"fruits", purpose:"Fruit sweetness and banana flavor.", effects:["Sweeter", "Creamier", "Stronger banana flavor over time"], bestRange:"1/2 banana" },
-    thin_chocolate_cookie: { id:"thin_chocolate_cookie", name:"Thin Chocolate Sandwich Cookie", category:"mixins", purpose:"Crunch and chocolate cookie flavor.", effects:["Crunch", "Dessert flavor", "Softens after chilling"], bestRange:"1 to 3 cookies" },
-    graham_cracker: { id:"graham_cracker", name:"Graham Cracker", category:"mixins", purpose:"Pie crust flavor and crunch.", effects:["Crust flavor", "Crunch", "Softens into cheesecake-like texture"], bestRange:"1/2 to 1 sheet" },
+    strawberries: { id:"strawberries", name:"Strawberries", category:"fruits", purpose:"Fruit flavor and volume.", effects:["Fresh fruit flavor", "More moisture", "Pairs well with cheesecake"], bestRange:"1/2 to 1 cup" },
+    blueberries: { id:"blueberries", name:"Blueberries", category:"fruits", purpose:"Fruit flavor and color.", effects:["Berry flavor", "Softer texture after chilling", "Pairs well with vanilla"], bestRange:"1/2 to 1 cup" },
+    banana: { id:"banana", name:"Banana", category:"fruits", purpose:"Fruit sweetness and banana flavor.", effects:["Sweeter", "Creamier", "Stronger banana flavor over time"], bestRange:"1/2 to 1 banana" },
+    thin_chocolate_cookie: { id:"thin_chocolate_cookie", name:"Thin Chocolate Sandwich Cookie", category:"additive", purpose:"Crunch and chocolate cookie flavor.", effects:["Crunch", "Dessert flavor", "Softens after chilling"], bestRange:"1 to 3 cookies" },
+    graham_cracker: { id:"graham_cracker", name:"Graham Cracker", category:"additive", purpose:"Pie crust flavor and crunch.", effects:["Crust flavor", "Crunch", "Softens into cheesecake-like texture"], bestRange:"1/2 to 1 sheet" },
     lemon_juice: { id:"lemon_juice", name:"Lemon Juice", category:"flavorings", purpose:"Bright citrus flavor.", effects:["Tartness", "Freshness", "Cuts sweetness"], bestRange:"1 tsp to 1 tbsp" },
     key_lime_juice: { id:"key_lime_juice", name:"Nellie & Joe's Key West Lime Juice", category:"flavorings", purpose:"Key lime tartness.", effects:["Tart citrus", "Pie flavor", "Fresh finish"], bestRange:"1 tsp to 1 tbsp" },
     vanilla_extract: { id:"vanilla_extract", name:"Vanilla Extract", category:"flavorings", purpose:"Rounds out sweetness and dessert flavor.", effects:["Warmer vanilla flavor", "Better sweetness perception"], bestRange:"1/4 to 1/2 tsp" }
@@ -185,52 +185,53 @@ const FLUFF_DATA = {
   formulas: [
     {
       id:"banana_cream_pie", name:"Banana Cream Pie", description:"A banana pudding-style fluff with a creamy pie profile.", inspiredBy:null,
-      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"), amt("vanilla_whey",1,[0.25,0.5,0.75,1,1.25,1.5,1.75,2],"base"), amt("banana_pudding",1,[.5,1,1.5,2],"base"), amt("whipped_topping",2,[0.5,1,2,4],"base"), amt("acacia_fiber",1,[.5,1,2],"base"), amt("banana",1,[.5,1,1.5,2],"fruits")],
+      ingredients:[amt("plain_protein_yogurt",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"), amt("vanilla_whey",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"), amt("banana_pudding",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"), amt("whipped_topping",2,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.50, 2.75, 3, 3.25, 3.50, 3.75, 4],"additive"), amt("acacia_fiber",1,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"additive"), amt("banana",1,[.5,1,1.5,2],"fruits")],
       procedure:["Add yogurt to the mixing bowl.","Add whey, pudding mix, whipped topping, and acacia fiber.","Mix until smooth and slightly fluffy.","Fold in banana.","Refrigerate at least 15–30 minutes."]
     },
     {
       id:"birthday_cake", name:"Birthday Cake", description:"Vanilla-forward fluff with a sweet celebration profile.", inspiredBy:null,
-      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("vanilla_whey",1,[0.25,0.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("vanilla_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base"),amt("vanilla_extract",.5,[.25,.5,1],"flavorings")],
+      ingredients:[amt("plain_protein_yogurt",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("vanilla_whey",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("vanilla_pudding",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("whipped_topping",2,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.50, 2.75, 3, 3.25, 3.50, 3.75, 4],"additive"),amt("acacia_fiber",1,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"additive"),amt("vanilla_extract",.5,[.25,.5,1],"flavorings")]
       procedure:["Add yogurt to the mixing bowl.","Add whey, pudding mix, whipped topping, and acacia fiber.","Mix until smooth.","Add vanilla extract and fold gently.","Refrigerate at least 15–30 minutes."]
     },
     {
       id:"blueberry_cheesecake", name:"Blueberry Cheesecake", description:"Cheesecake fluff with blueberries for a bright dessert flavor.", inspiredBy:null,
-      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("vanilla_whey",1,[0.25,0.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("cheesecake_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base"),amt("blueberries",1,[.5,1,1.5,2],"fruits")],
+      ingredients:[amt("plain_protein_yogurt",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("vanilla_whey",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("cheesecake_pudding",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("whipped_topping",2,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.50, 2.75, 3, 3.25, 3.50, 3.75, 4],"additive"),amt("acacia_fiber",1,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"additive"),amt("blueberries",1,[.5,1,1.5,2],"fruits")],
       procedure:["Add yogurt to the mixing bowl.","Add whey, cheesecake pudding, whipped topping, and acacia fiber.","Mix until smooth and thick.","Fold in blueberries.","Refrigerate at least 15–30 minutes."]
     },
     {
       id:"chocolate", name:"Chocolate", description:"Simple chocolate fluff built from a chocolate protein and pudding base.", inspiredBy:null,
-      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("chocolate_whey",1,[0.25,.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("chocolate_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base")],
+      ingredients:[amt("plain_protein_yogurt",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("chocolate_whey",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("chocolate_pudding",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("whipped_topping",2,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.50, 2.75, 3, 3.25, 3.50, 3.75, 4],"additive"),amt("acacia_fiber",1,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"additive")]
       procedure:["Add yogurt to the mixing bowl.","Add chocolate whey, chocolate pudding, whipped topping, and acacia fiber.","Mix until smooth and fluffy.","Refrigerate at least 15–30 minutes."]
     },
     {
       id:"cookies_and_cream", name:"Cookies & Cream", description:"Vanilla cream base with a thin chocolate sandwich cookie finish.", inspiredBy:null,
-      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("vanilla_whey",1,[0.25,0.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("vanilla_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base"),amt("thin_chocolate_cookie",2,[1,2,4],"mixins")],
+      ingredients:[amt("plain_protein_yogurt",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("vanilla_whey",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("vanilla_pudding",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("whipped_topping",2,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.50, 2.75, 3, 3.25, 3.50, 3.75, 4],"additive"),amt("acacia_fiber",1,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"additive"),amt("thin_chocolate_cookie",2,[1,2,4],"additive")],
       procedure:["Add yogurt to the mixing bowl.","Add vanilla whey, vanilla pudding, whipped topping, and acacia fiber.","Mix until smooth.","Fold in thin chocolate sandwich cookies last.","Refrigerate at least 15–30 minutes."]
     },
     {
       id:"key_lime_pie", name:"Key Lime Pie", description:"Cheesecake-style fluff with key lime and crust flavor.", inspiredBy:null,
-      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("vanilla_whey",1,[0.25,0.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("cheesecake_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base"),amt("key_lime_juice",1,[.5,1,1.5],"flavorings"),amt("graham_cracker",4,[1,2,3,4,5,6,7,8],"mixins")],
+      ingredients:[amt("plain_protein_yogurt",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("vanilla_whey",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("cheesecake_pudding",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("whipped_topping",2,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.50, 2.75, 3, 3.25, 3.50, 3.75, 4],"additive"),amt("acacia_fiber",1,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"additive"),amt("key_lime_juice",1,[.5,1,1.5],"flavorings"),amt("graham_cracker",4,[1,2,3,4,5,6,7,
+
       procedure:["Add yogurt to the mixing bowl.","Add whey, cheesecake pudding, whipped topping, and acacia fiber.","Mix until smooth.","Fold in key lime juice.","Add graham cracker near the end.","Refrigerate at least 15–30 minutes."]
     },
     {
       id:"lemon_cheesecake", name:"Lemon Cheesecake", description:"Bright lemon cheesecake-style fluff.", inspiredBy:null,
-      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("vanilla_whey",1,[0.25,.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("cheesecake_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base"),amt("lemon_juice",1,[.5,1,1.5,2],"flavorings")],
+      ingredients:[amt("plain_protein_yogurt",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("vanilla_whey",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("cheesecake_pudding",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("whipped_topping",2,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.50, 2.75, 3, 3.25, 3.50, 3.75, 4],"additive"),amt("acacia_fiber",1,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"additive"),amt("lemon_juice",1,[.5,1,1.5,2],"flavorings")],
       procedure:["Add yogurt to the mixing bowl.","Add whey, cheesecake pudding, whipped topping, and acacia fiber.","Mix until smooth.","Add lemon juice and fold gently.","Refrigerate at least 15–30 minutes."]
     },
     {
       id:"peanut_butter_cup", name:"Peanut Butter Cup", description:"Chocolate base ready for peanut butter style experiments.", inspiredBy:null,
-      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("chocolate_whey",1,[0.25,0.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("chocolate_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base")],
+      ingredients:[amt("plain_protein_yogurt",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("chocolate_whey",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("chocolate_pudding",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("whipped_topping",2,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.50, 2.75, 3, 3.25, 3.50, 3.75, 4],"additive"),amt("acacia_fiber",1,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"additive")],
       procedure:["Add yogurt to the mixing bowl.","Add chocolate whey, chocolate pudding, whipped topping, and acacia fiber.","Mix until smooth and thick.","Add your peanut butter-style mix-in if desired.","Refrigerate at least 15–30 minutes."]
     },
     {
       id:"strawberry_cheesecake", name:"Strawberry Cheesecake", description:"Cheesecake fluff with strawberry folded in.", inspiredBy:null,
-      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("vanilla_whey",1,[0.25,0.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("cheesecake_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base"),amt("strawberries",1,[.5,1,1.5],"fruits")],
+      ingredients:[amt("plain_protein_yogurt",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("vanilla_whey",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("cheesecake_pudding",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("whipped_topping",2,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.50, 2.75, 3, 3.25, 3.50, 3.75, 4],"additive"),amt("acacia_fiber",1,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"additive"),amt("strawberries",1,[.5,1,1.5],"fruits")]
       procedure:["Add yogurt to the mixing bowl.","Add whey, cheesecake pudding, whipped topping, and acacia fiber.","Mix until smooth and thick.","Fold in strawberries.","Refrigerate at least 15–30 minutes."]
     },
     {
       id:"vanilla_bean", name:"Vanilla Bean", description:"Simple vanilla fluff that works as a base for experiments.", inspiredBy:null,
-      ingredients:[amt("plain_protein_yogurt",1,[.5,1,1.5,2],"base"),amt("vanilla_whey",1,[0.25,0.5,0.75,1,1.25,1.5,1.75,2],"base"),amt("vanilla_pudding",1,[.5,1,1.5,2],"base"),amt("whipped_topping",2,[0.5,1,2,4],"base"),amt("acacia_fiber",1,[.5,1,2],"base"),amt("vanilla_extract",.5,[.25,.5,1],"flavorings")],
+      ingredients:[amt("plain_protein_yogurt",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("vanilla_whey",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("vanilla_pudding",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"),amt("whipped_topping",2,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.50, 2.75, 3, 3.25, 3.50, 3.75, 4],"additive"),amt("acacia_fiber",1,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"additive"),amt("vanilla_extract",.5,[.25,.5,1],"flavorings")],
       procedure:["Add yogurt to the mixing bowl.","Add vanilla whey, vanilla pudding, whipped topping, and acacia fiber.","Mix until smooth.","Add vanilla extract and fold gently.","Refrigerate at least 15–30 minutes."]
     }
   ].sort((a,b)=>a.name.localeCompare(b.name))
