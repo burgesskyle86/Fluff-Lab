@@ -134,17 +134,12 @@ function formulaPreview(){
       <button class="primary-btn full" id="makeBtn" style="margin-top:14px">Make This Formula</button>
       <button class="frankenstein-btn full" id="frankensteinBtn" style="margin-top:10px">Frankenstein Formula</button>
     </section>
-    <div id="frankensteinFlash" class="frankenstein-flash" aria-hidden="true">
-      <img src="frankenstein-monster.png" alt="" class="frankenstein-monster" />
-    </div>`;
   document.getElementById("makeBtn").addEventListener("click",()=>createExperiment(f.id));
   document.getElementById("frankensteinBtn").addEventListener("click",()=>launchFrankenstein(f.id));
 }
 
 function launchFrankenstein(formulaId){
-  const overlay = document.getElementById("frankensteinFlash");
-  overlay.classList.add("active");
-  setTimeout(()=>createExperiment(formulaId, true), 1800);
+  createExperiment(formulaId, true);
 }
 
 function summaryBox(num,label){return `<div class="summary-box"><div class="summary-num">${num}</div><div class="summary-label">${label}</div></div>`}
@@ -348,7 +343,6 @@ function manual(){
   screen.innerHTML=`
     <section class="card">
       <h2>Lab Manual</h2>
-      <p>Start here if you're new to Fluff Lab!</p>
     </section>
     
     <section class="card">
@@ -361,6 +355,7 @@ function manual(){
       <p><b>Formula:</b> A starting recipe idea.</p>
       <p><b>Experiment:</b> The version you are making right now.</p>
       <p><b>Protocol:</b> A saved version you want to repeat.</p>
+      <p><b>Frankenstein Formula:</b> A Formula that allows you to add any ingredient from the Lab Supplies database.</p>
     </section>
 
     <section class="card">

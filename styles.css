@@ -44,10 +44,5 @@ h1{font-size:2.1rem;margin:0;line-height:1.05}h2{font-size:1.35rem;margin:0}h3{f
 .frankenstein-mode .sticky-nav{border-bottom-color:rgba(163,230,53,.6)}
 .frankenstein-mode .action-card.primary{background:linear-gradient(135deg,#a3e635,#65a30d);border-color:rgba(163,230,53,.85);color:#071000}
 .frankenstein-mode .secondary-btn{background:rgba(163,230,53,.12);border-color:rgba(163,230,53,.55);color:#ecfccb}
-.frankenstein-flash{position:fixed;inset:0;z-index:9999;background:#000;display:none;align-items:center;justify-content:center;overflow:hidden;pointer-events:none}
-.frankenstein-flash.active{display:flex;animation:frankBlackout 1.8s ease-in-out forwards}
-.frankenstein-monster{max-width:min(88vw,560px);max-height:92vh;object-fit:contain;opacity:0;animation:monsterFade 1.8s ease-in-out forwards}
-@keyframes frankBlackout{0%,100%{background:#000}}
-@keyframes monsterFade{0%{opacity:0;transform:scale(.97)}22%{opacity:0;transform:scale(.97)}48%{opacity:1;transform:scale(1)}68%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.015)}}
 .ingredient-picker-backdrop{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.78);display:grid;place-items:center;padding:18px}
 .ingredient-picker{width:min(520px,100%);background:#0b120b;border:1px solid rgba(163,230,53,.55);border-radius:24px;padding:18px;box-shadow:0 24px 70px rgba(0,0,0,.65)}
