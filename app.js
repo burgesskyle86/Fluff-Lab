@@ -133,7 +133,8 @@ function formulaPreview(){
       </div>
       <button class="primary-btn full" id="makeBtn" style="margin-top:14px">Make This Formula</button>
       <button class="frankenstein-btn full" id="frankensteinBtn" style="margin-top:10px">Frankenstein Formula</button>
-    </section>
+    </section>`;
+
   document.getElementById("makeBtn").addEventListener("click",()=>createExperiment(f.id));
   document.getElementById("frankensteinBtn").addEventListener("click",()=>launchFrankenstein(f.id));
 }
@@ -142,7 +143,9 @@ function launchFrankenstein(formulaId){
   createExperiment(formulaId, true);
 }
 
-function summaryBox(num,label){return `<div class="summary-box"><div class="summary-num">${num}</div><div class="summary-label">${label}</div></div>`}
+function summaryBox(num,label){
+  return `<div class="summary-box"><div class="summary-num">${num}</div><div class="summary-label">${label}</div></div>`;
+}
 
 function createExperiment(formulaId, isFrankenstein=false){
   const f = getFormula(formulaId);
