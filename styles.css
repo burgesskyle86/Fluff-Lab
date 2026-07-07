@@ -45,8 +45,8 @@ h1{font-size:2.1rem;margin:0;line-height:1.05}h2{font-size:1.35rem;margin:0}h3{f
 .frankenstein-mode .action-card.primary{background:linear-gradient(135deg,#a3e635,#65a30d);border-color:rgba(163,230,53,.85);color:#071000}
 .frankenstein-mode .secondary-btn{background:rgba(163,230,53,.12);border-color:rgba(163,230,53,.55);color:#ecfccb}
 .frankenstein-flash{position:fixed;inset:0;z-index:9999;background:#000;display:none;align-items:center;justify-content:center;overflow:hidden;pointer-events:none}
-.frankenstein-flash.active{display:flex;animation:frankScene 1.05s linear forwards}
-.frankenstein-monster{max-width:min(86vw,560px);max-height:92vh;object-fit:contain;opacity:0;filter:contrast(1.08);animation:monsterFlash 1.05s linear forwards}
+.frankenstein-flash.active{display:flex;animation:frankScene 3.05s linear forwards}
+.frankenstein-monster{max-width:min(86vw,560px);max-height:92vh;object-fit:contain;opacity:0;filter:contrast(1.08);animation:monsterFlash 3.05s linear forwards}
 .lightning-flash{position:absolute;inset:0;background:#f7ffe8;opacity:0;animation:lightningFlash 1.05s linear forwards}
 @keyframes frankScene{0%,100%{background:#000}12%{background:#f7ffe8}18%,42%{background:#000}48%{background:#d9ff7a}56%,100%{background:#000}}
 @keyframes monsterFlash{0%,10%{opacity:0}12%,18%{opacity:.55}19%,45%{opacity:0}48%,70%{opacity:1}85%{opacity:.7}100%{opacity:0}}
