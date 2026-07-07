@@ -66,6 +66,9 @@ function goBack(){
 }
 
 function render(){
+  const activeExp = state.experiments.find(e => e.id === state.activeExperimentId);
+  const keepFrankensteinTheme = (state.view === "experiment" || state.view === "finishExperiment") && activeExp?.isFrankenstein;
+  document.body.classList.toggle("frankenstein-mode", Boolean(keepFrankensteinTheme));
   backBtn.style.visibility = state.view === "home" ? "hidden" : "visible";
   const map = {home, formulas, formulaPreview, experiment, finishExperiment, protocols, protocolDetail, labSupplies, experimentLog, settings, manual};
   (map[state.view] || home)();
@@ -132,7 +135,6 @@ function formulaPreview(){
       <button class="frankenstein-btn full" id="frankensteinBtn" style="margin-top:10px">Frankenstein Formula</button>
     </section>
     <div id="frankensteinFlash" class="frankenstein-flash" aria-hidden="true">
-      <div class="lightning-flash"></div>
       <img src="frankenstein-monster.png" alt="" class="frankenstein-monster" />
     </div>`;
   document.getElementById("makeBtn").addEventListener("click",()=>createExperiment(f.id));
@@ -142,8 +144,7 @@ function formulaPreview(){
 function launchFrankenstein(formulaId){
   const overlay = document.getElementById("frankensteinFlash");
   overlay.classList.add("active");
-  document.body.classList.add("frankenstein-mode");
-  setTimeout(()=>createExperiment(formulaId, true), 1050);
+  setTimeout(()=>createExperiment(formulaId, true), 1800);
 }
 
 function summaryBox(num,label){return `<div class="summary-box"><div class="summary-num">${num}</div><div class="summary-label">${label}</div></div>`}
