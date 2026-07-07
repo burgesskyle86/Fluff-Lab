@@ -129,12 +129,26 @@ function formulaPreview(){
         <ul class="ingredient-bullets">${uniqueIngredients(f).map(id=>`<li>${escapeHtml(FLUFF_DATA.genericIngredients[id].name)}</li>`).join("")}</ul>
       </div>
       <button class="primary-btn full" id="makeBtn" style="margin-top:14px">Make This Formula</button>
-    </section>`;
+      <button class="frankenstein-btn full" id="frankensteinBtn" style="margin-top:10px">Frankenstein Formula</button>
+    </section>
+    <div id="frankensteinFlash" class="frankenstein-flash" aria-hidden="true">
+      <div class="lightning-flash"></div>
+      <img src="frankenstein-monster.png" alt="" class="frankenstein-monster" />
+    </div>`;
   document.getElementById("makeBtn").addEventListener("click",()=>createExperiment(f.id));
+  document.getElementById("frankensteinBtn").addEventListener("click",()=>launchFrankenstein(f.id));
 }
+
+function launchFrankenstein(formulaId){
+  const overlay = document.getElementById("frankensteinFlash");
+  overlay.classList.add("active");
+  document.body.classList.add("frankenstein-mode");
+  setTimeout(()=>createExperiment(formulaId, true), 1050);
+}
+
 function summaryBox(num,label){return `<div class="summary-box"><div class="summary-num">${num}</div><div class="summary-label">${label}</div></div>`}
 
-function createExperiment(formulaId){
+function createExperiment(formulaId, isFrankenstein=false){
   const f = getFormula(formulaId);
   const exp = {
     id:`exp_${Date.now()}`,
@@ -144,6 +158,8 @@ function createExperiment(formulaId){
     status:"making",
     createdAt:new Date().toLocaleString(),
     ingredientMultipliers:f.ingredients.map(i=>i.multiplier),
+    isFrankenstein,
+    customIngredients:[],
     checks:{},
     observations:"",
     conclusion:"",
@@ -169,6 +185,8 @@ function experiment(){
       ${Object.entries(ingredientsByGroup).map(([group,items])=>`
         <div class="step-group"><div class="group-title">${groupLabel(group)}</div>
         ${items.map(item=>ingredientControl(item, exp)).join("")}</div>`).join("")}
+      ${exp.isFrankenstein ? customIngredientControls(exp) : ""}
+      ${exp.isFrankenstein ? `<button class="frankenstein-btn full" id="addIngredientBtn" style="margin-top:12px">+ Add Ingredient</button>` : ""}
     </section>
     <section class="card">
       <h3>Procedure</h3>
@@ -205,11 +223,34 @@ function bindExperimentControls(exp,f){
   document.querySelectorAll("[data-check]").forEach(input=>input.addEventListener("change",()=>{exp.checks[input.dataset.check]=input.checked;save();}));
   document.getElementById("saveChillBtn").addEventListener("click",()=>{exp.status="chilling";save();navigate("experimentLog");});
   document.getElementById("finishBtn").addEventListener("click",()=>navigate("finishExperiment",{experimentId:exp.id}));
+  const addBtn = document.getElementById("addIngredientBtn");
+  if(addBtn) addBtn.addEventListener("click",()=>showIngredientPicker(exp));
+  document.querySelectorAll("[data-remove-custom]").forEach(btn=>btn.addEventListener("click",()=>{exp.customIngredients.splice(Number(btn.dataset.removeCustom),1);save();render();}));
+  document.querySelectorAll("[data-custom-multi]").forEach(sel=>sel.addEventListener("change",()=>{exp.customIngredients[Number(sel.dataset.customMulti)].multiplier=Number(sel.value);save();render();}));
 }
 function changeAmount(exp,f,index,dir){
   const item = f.ingredients[index]; const opts = item.options || [item.multiplier];
   const current = exp.ingredientMultipliers[index]; let pos = opts.findIndex(o=>Number(o)===Number(current)); if(pos<0) pos = opts.indexOf(item.multiplier);
   const next = Math.max(0, Math.min(opts.length-1, pos + dir)); exp.ingredientMultipliers[index] = opts[next]; save(); render();
+}
+
+function customIngredientControls(exp){
+  if(!exp.customIngredients?.length) return `<p class="empty">No mutations added yet.</p>`;
+  return `<div class="step-group"><div class="group-title">Mutations</div>${exp.customIngredients.map((item,idx)=>{
+    const ing=FLUFF_DATA.genericIngredients[item.ingredient]; const product=getProduct(item.ingredient); const macros=scaledProduct(product,item.multiplier);
+    const opts=[0.25,0.5,0.75,1,1.25,1.5,2];
+    return `<div class="soft-card" style="margin:10px 0"><div class="product-top"><div><strong>${escapeHtml(ing.name)}</strong><div class="tiny">Using: ${escapeHtml(product.name)}</div></div><button class="small-btn" data-remove-custom="${idx}">Remove</button></div><div class="field"><label>Amount</label><select data-custom-multi="${idx}">${opts.map(o=>`<option value="${o}" ${Number(o)===Number(item.multiplier)?"selected":""}>${displayAmount(product,o)}</option>`).join("")}</select></div><div class="macro-line">${macros.calories} cal · ${macros.protein}g protein</div></div>`;
+  }).join("")}</div>`;
+}
+
+function showIngredientPicker(exp){
+  const existing=new Set([...getFormula(exp.formulaId).ingredients.map(i=>i.ingredient), ...(exp.customIngredients||[]).map(i=>i.ingredient)]);
+  const choices=Object.values(FLUFF_DATA.genericIngredients).filter(i=>!existing.has(i.id) && getProduct(i.id));
+  const wrap=document.createElement("div"); wrap.className="ingredient-picker-backdrop";
+  wrap.innerHTML=`<div class="ingredient-picker"><h3>Add Mutation</h3><p class="subtitle">Choose any verified ingredient from the Lab Supplies database.</p><div class="field"><label>Ingredient</label><select id="mutationSelect">${choices.map(i=>`<option value="${i.id}">${escapeHtml(i.name)}</option>`).join("")}</select></div><div class="button-row"><button class="secondary-btn" id="cancelMutation">Cancel</button><button class="frankenstein-btn" id="confirmMutation">Add Ingredient</button></div></div>`;
+  document.body.appendChild(wrap);
+  wrap.querySelector("#cancelMutation").onclick=()=>wrap.remove();
+  wrap.querySelector("#confirmMutation").onclick=()=>{const id=wrap.querySelector("#mutationSelect").value; if(id){exp.customIngredients=exp.customIngredients||[]; exp.customIngredients.push({ingredient:id,multiplier:1});save();wrap.remove();render();}};
 }
 
 function finishExperiment(){
@@ -246,7 +287,9 @@ function saveProtocol(exp){
 }
 function captureIngredients(exp){
   const f = getFormula(exp.formulaId);
-  return f.ingredients.map((it,idx)=>{const product=getProduct(it.ingredient); const multi=exp.ingredientMultipliers[idx]; const macros=scaledProduct(product,multi); return {ingredient:it.ingredient, ingredientName:FLUFF_DATA.genericIngredients[it.ingredient].name, productId:product.id, productName:product.name, amount:displayAmount(product,multi), calories:macros.calories, protein:macros.protein};});
+  const base=f.ingredients.map((it,idx)=>{const product=getProduct(it.ingredient); const multi=exp.ingredientMultipliers[idx]; const macros=scaledProduct(product,multi); return {ingredient:it.ingredient, ingredientName:FLUFF_DATA.genericIngredients[it.ingredient].name, productId:product.id, productName:product.name, amount:displayAmount(product,multi), calories:macros.calories, protein:macros.protein};});
+  const custom=(exp.customIngredients||[]).map(it=>{const product=getProduct(it.ingredient); const macros=scaledProduct(product,it.multiplier); return {ingredient:it.ingredient, ingredientName:FLUFF_DATA.genericIngredients[it.ingredient].name, productId:product.id, productName:product.name, amount:displayAmount(product,it.multiplier), calories:macros.calories, protein:macros.protein};});
+  return [...base,...custom];
 }
 
 function protocols(){
