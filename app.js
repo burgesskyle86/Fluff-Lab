@@ -280,7 +280,7 @@ function finishExperiment(){
         <button class="primary-btn" id="protocolBtn">Save Protocol</button>
         <button class="danger-btn" id="deleteExpBtn">Delete Experiment</button>
       </div>;
-    </section>`;
+    </section>`
   document.querySelectorAll("[data-star]").forEach(b=>b.addEventListener("click",()=>{exp.rating=Number(b.dataset.star);saveFinish(exp,false);render();}));
   document.getElementById("saveExpBtn").addEventListener("click",()=>{saveFinish(exp,true);navigate("experimentLog");});
   document.getElementById("protocolBtn").addEventListener("click",()=>{saveFinish(exp,true);saveProtocol(exp);navigate("protocols");});
