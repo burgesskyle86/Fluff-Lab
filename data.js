@@ -185,7 +185,7 @@ const FLUFF_DATA = {
   formulas: [
     {
       id:"banana_cream_pie", name:"Banana Cream Pie", description:"A banana pudding-style fluff with a creamy pie profile.", inspiredBy:null,
-      ingredients:[amt("plain_protein_yogurt",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"), amt("vanilla_whey",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"), amt("banana_pudding",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"), amt("whipped_topping",2,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.50, 2.75, 3, 3.25, 3.50, 3.75, 4],"additive"), amt("acacia_fiber",1,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"additive"), amt("banana",1,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"fruits")],
+      ingredients:[amt("plain_protein_yogurt",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"), amt("vanilla_whey",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"), amt("banana_pudding",1,[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"base"), amt("whipped_topping",2,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.50, 2.75, 3, 3.25, 3.50, 3.75, 4],"additive"), amt("acacia_fiber",1,[0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],"additive"), amt("banana",1,[0, 0.5, 1, 1.5, 2],"fruits")],
       procedure:["Add yogurt and whipped topping to the mixing bowl and mix until evenly combined.","Add whey, pudding mix, and acacia fiber to the mixing bowl and mix.","Mix until smooth and slightly fluffy.","Fold in banana.","Refrigerate at least 15–30 minutes, or over night."]
     },
     {
