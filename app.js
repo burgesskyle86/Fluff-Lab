@@ -203,12 +203,11 @@ function experiment(){
         <button class="secondary-btn" id="saveChillBtn">Save & Chill</button>
         <button class="primary-btn" id="finishBtn">Finish Experiment</button>
       </div>
-      <button class="danger-btn full" id="deleteExpBtn" style="margin-top:10px">Delete Experiment</button><div class="button-row">
+      <button class="danger-btn full" id="deleteExpBtn" style="margin-top:10px">Delete Experiment</button>
     </section>`;
   bindExperimentControls(exp,f);
 }
 function ingredientControl(item, exp){
-  function ingredientControl(item, exp){
   const ing = FLUFF_DATA.genericIngredients[item.ingredient];
   const product = getProduct(item.ingredient);
   const idx = item.index;
@@ -228,23 +227,6 @@ function ingredientControl(item, exp){
   </div>`;
 }
 
-  const ing = FLUFF_DATA.genericIngredients[item.ingredient];
-  const product = getProduct(item.ingredient);
-  const idx = item.index;
-  const multi = exp.ingredientMultipliers[idx];
-  const macros = scaledProduct(product,multi);
-  return `<div class="soft-card" style="margin:10px 0">
-    <strong>${escapeHtml(ing.name)}</strong>
-    <div class="tiny">Using: ${escapeHtml(product.name)}</div>
-    <div class="amount-row">
-      <button class="round-btn" data-dec="${idx}">−</button>
-      <div class="amount-display">${displayAmount(product,multi)}</div>
-      <button class="round-btn" data-inc="${idx}">+</button>
-    </div>
-    <div class="macro-line">${macros.calories} cal · ${macros.protein}g protein</div>
-    <div class="effect">${escapeHtml((ing.effects || [])[0] || ing.purpose)}</div>
-  </div>`;
-}
 function checkRow(key,text,exp){return `<label class="check-row"><input type="checkbox" data-check="${key}" ${exp.checks[key]?"checked":""}/><span>${escapeHtml(text)}</span></label>`}
 function bindExperimentControls(exp,f){
   document.querySelectorAll("[data-inc]").forEach(btn=>btn.addEventListener("click",()=>changeAmount(exp, f, Number(btn.dataset.inc), 1)));
@@ -307,8 +289,8 @@ function finishExperiment(){
         <button class="secondary-btn" id="saveExpBtn">Save Experiment</button>
         <button class="primary-btn" id="protocolBtn">Save Protocol</button>
         <button class="danger-btn" id="deleteExpBtn">Delete Experiment</button>
-      </div>;
-    </section>`
+      </div>
+    </section>`;
   document.querySelectorAll("[data-star]").forEach(b=>b.addEventListener("click",()=>{exp.rating=Number(b.dataset.star);saveFinish(exp,false);render();}));
   document.getElementById("saveExpBtn").addEventListener("click",()=>{saveFinish(exp,true);navigate("experimentLog");});
   document.getElementById("protocolBtn").addEventListener("click",()=>{saveFinish(exp,true);saveProtocol(exp);navigate("protocols");});
