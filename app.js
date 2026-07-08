@@ -478,7 +478,15 @@ function singularUnit(unit) {
 
   return units[unit] || unit;
 }
-function prettyMultiplier(n){ if(n===.25)return "1/4"; if(n===.5)return "1/2"; if(n===.75)return "3/4"; if(n===1.25)return "1¼"; if(n===1.5)return "1½"; return String(n)};
+function prettyMultiplier(n){
+  if(n===.25)return "1/4";
+  if(n===.5)return "1/2";
+  if(n===.75)return "3/4";
+  if(n===1.25)return "1¼";
+  if(n===1.5)return "1½";
+  if(n===1.75)return "1¾";
+  return String(n);
+}function prettyMultiplier(n){ if(n===.25)return "1/4"; if(n===.5)return "1/2"; if(n===.75)return "3/4"; if(n===1.25)return "1¼"; if(n===1.5)return "1½"; return String(n)};
 function groupIngredients(f,exp){const groups={}; f.ingredients.forEach((it,index)=>{const g=it.group || FLUFF_DATA.genericIngredients[it.ingredient].category; if(!groups[g])groups[g]=[]; groups[g].push({...it,index});}); return groups}
 function groupLabel(g){
   return ({
