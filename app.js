@@ -203,36 +203,31 @@ function experiment(){
         <button class="secondary-btn" id="saveChillBtn">Save & Chill</button>
         <button class="primary-btn" id="finishBtn">Finish Experiment</button>
       </div>
+      <button class="danger-btn full" id="deleteExpBtn" style="margin-top:10px">Delete Experiment</button><div class="button-row">
     </section>`;
   bindExperimentControls(exp,f);
 }
 function ingredientControl(item, exp){
-    screen.innerHTML = `
-    <section class="card">
-      <h2>Experiment Complete</h2>
-      <p class="subtitle">Record what happened, then preserve it as a Protocol if it is worth repeating.</p>
-      <div class="summary-grid" style="margin-top:12px">${summaryBox(totals.calories,"Calories")}${summaryBox(`${totals.protein}g`,"Protein")}</div>
-      <div class="field"><label>Experiment Name</label><input id="experimentName" value="${escapeAttribute(exp.name)}" /></div>
-      <div class="field"><label>Observations</label><textarea id="observations" placeholder="Texture, sweetness, thickness, what changed...">${escapeHtml(exp.observations)}</textarea></div>
-      <div class="field"><label>Conclusion</label><textarea id="conclusion" placeholder="What worked? What would you repeat?">${escapeHtml(exp.conclusion)}</textarea></div>
-      <div class="field"><label>Overall Rating</label><div class="stars">${[1,2,3,4,5].map(n=>`<button class="star ${exp.rating>=n?"active":""}" data-star="${n}">★</button>`).join("")}</div></div>
-      <div class="field"><label>Protocol Name</label><input id="protocolName" value="${escapeAttribute(exp.name)}" /></div>
-      <div class="button-row">
-        <button class="secondary-btn" id="saveExpBtn">Save Experiment</button>
-        <button class="primary-btn" id="protocolBtn">Save Protocol</button>
-        <button class="danger-btn" id="deleteExpBtn">Delete Experiment</button>
-      </div>;
-    </section>`
-  document.querySelectorAll("[data-star]").forEach(b=>b.addEventListener("click",()=>{exp.rating=Number(b.dataset.star);saveFinish(exp,false);render();}));
-  document.getElementById("saveExpBtn").addEventListener("click",()=>{saveFinish(exp,true);navigate("experimentLog");});
-  document.getElementById("protocolBtn").addEventListener("click",()=>{saveFinish(exp,true);saveProtocol(exp);navigate("protocols");});
-  document.getElementById("deleteExpBtn").addEventListener("click",()=>{
-    if(confirm("Delete this experiment? This cannot be undone.")){
-      state.experiments = state.experiments.filter(e=>e.id !== exp.id);
-      save();
-      navigate("experimentLog", {}, false);
-    }
-  });
+  function ingredientControl(item, exp){
+  const ing = FLUFF_DATA.genericIngredients[item.ingredient];
+  const product = getProduct(item.ingredient);
+  const idx = item.index;
+  const multi = exp.ingredientMultipliers[idx];
+  const macros = scaledProduct(product,multi);
+
+  return `<div class="soft-card" style="margin:10px 0">
+    <strong>${escapeHtml(ing.name)}</strong>
+    <div class="tiny">Using: ${escapeHtml(product.name)}</div>
+    <div class="amount-row">
+      <button class="round-btn" data-dec="${idx}">−</button>
+      <div class="amount-display">${displayAmount(product,multi)}</div>
+      <button class="round-btn" data-inc="${idx}">+</button>
+    </div>
+    <div class="macro-line">${macros.calories} cal · ${macros.protein}g protein</div>
+    <div class="effect">${escapeHtml((ing.effects || [])[0] || ing.purpose)}</div>
+  </div>`;
+}
+
   const ing = FLUFF_DATA.genericIngredients[item.ingredient];
   const product = getProduct(item.ingredient);
   const idx = item.index;
@@ -257,6 +252,13 @@ function bindExperimentControls(exp,f){
   document.querySelectorAll("[data-check]").forEach(input=>input.addEventListener("change",()=>{exp.checks[input.dataset.check]=input.checked;save();}));
   document.getElementById("saveChillBtn").addEventListener("click",()=>{exp.status="chilling";save();navigate("experimentLog");});
   document.getElementById("finishBtn").addEventListener("click",()=>navigate("finishExperiment",{experimentId:exp.id}));
+  document.getElementById("deleteExpBtn").addEventListener("click",()=>{
+    if(confirm("Delete this experiment? This cannot be undone.")){
+      state.experiments = state.experiments.filter(e=>e.id !== exp.id);
+      save();
+      navigate("experimentLog", {}, false);
+    }
+  });
   const addBtn = document.getElementById("addIngredientBtn");
   if(addBtn) addBtn.addEventListener("click",()=>showIngredientPicker(exp));
   document.querySelectorAll("[data-remove-custom]").forEach(btn=>btn.addEventListener("click",()=>{exp.customIngredients.splice(Number(btn.dataset.removeCustom),1);save();render();}));
@@ -291,6 +293,32 @@ function finishExperiment(){
   const exp = getExperiment(state.activeExperimentId);
   if(!exp){navigate("experimentLog",{},false);return}
   const totals = experimentTotals(exp);
+    screen.innerHTML = `
+    <section class="card">
+      <h2>Experiment Complete</h2>
+      <p class="subtitle">Record what happened, then preserve it as a Protocol if it is worth repeating.</p>
+      <div class="summary-grid" style="margin-top:12px">${summaryBox(totals.calories,"Calories")}${summaryBox(`${totals.protein}g`,"Protein")}</div>
+      <div class="field"><label>Experiment Name</label><input id="experimentName" value="${escapeAttribute(exp.name)}" /></div>
+      <div class="field"><label>Observations</label><textarea id="observations" placeholder="Texture, sweetness, thickness, what changed...">${escapeHtml(exp.observations)}</textarea></div>
+      <div class="field"><label>Conclusion</label><textarea id="conclusion" placeholder="What worked? What would you repeat?">${escapeHtml(exp.conclusion)}</textarea></div>
+      <div class="field"><label>Overall Rating</label><div class="stars">${[1,2,3,4,5].map(n=>`<button class="star ${exp.rating>=n?"active":""}" data-star="${n}">★</button>`).join("")}</div></div>
+      <div class="field"><label>Protocol Name</label><input id="protocolName" value="${escapeAttribute(exp.name)}" /></div>
+      <div class="button-row">
+        <button class="secondary-btn" id="saveExpBtn">Save Experiment</button>
+        <button class="primary-btn" id="protocolBtn">Save Protocol</button>
+        <button class="danger-btn" id="deleteExpBtn">Delete Experiment</button>
+      </div>;
+    </section>`
+  document.querySelectorAll("[data-star]").forEach(b=>b.addEventListener("click",()=>{exp.rating=Number(b.dataset.star);saveFinish(exp,false);render();}));
+  document.getElementById("saveExpBtn").addEventListener("click",()=>{saveFinish(exp,true);navigate("experimentLog");});
+  document.getElementById("protocolBtn").addEventListener("click",()=>{saveFinish(exp,true);saveProtocol(exp);navigate("protocols");});
+  document.getElementById("deleteExpBtn").addEventListener("click",()=>{
+    if(confirm("Delete this experiment? This cannot be undone.")){
+      state.experiments = state.experiments.filter(e=>e.id !== exp.id);
+      save();
+      navigate("experimentLog", {}, false);
+    }
+  });
 }
 function saveFinish(exp,complete){
   exp.name = document.getElementById("experimentName")?.value.trim() || exp.name;
