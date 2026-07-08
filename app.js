@@ -166,7 +166,14 @@ function createExperiment(formulaId, isFrankenstein=false){
   };
   state.experiments.unshift(exp); save(); navigate("experiment",{experimentId:exp.id});
 }
-
+function frankensteinProcedure(){
+  return [
+    "Mix the base ingredients until smooth.",
+    "Fold in any fruit or additives.",
+    "Cover and chill until thickened.",
+    "Record your observations."
+  ];
+}
 function experiment(){
   const exp = getExperiment(state.activeExperimentId);
   if(!exp){ navigate("experimentLog",{},false); return; }
@@ -189,7 +196,9 @@ function experiment(){
     </section>
     <section class="card">
       <h3>Procedure</h3>
-      ${f.procedure.map((step,idx)=>checkRow(`proc_${idx}`, step, exp)).join("")}
+      ${(exp.isFrankenstein ? frankensteinProcedure() : f.procedure)
+        .map((step,idx)=>checkRow(`proc_${idx}`, step, exp))
+        .join("")}
       <div class="button-row">
         <button class="secondary-btn" id="saveChillBtn">Save & Chill</button>
         <button class="primary-btn" id="finishBtn">Finish Experiment</button>
